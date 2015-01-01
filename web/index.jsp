@@ -2,14 +2,16 @@
     Document    :   index
     Created on  :   2014. 12. 29,AM 09:27:09    Start
     Part        :   2014. 12. 29 AM 11:00:00    UI partly
-                    2014. 12. 29 PM 6:01:00     Check values
-                    2014. 12. 30 PM 4:04:00     Connect all values with database
-                    2014. 12. 31 PM 2:04:00     Solve save query error
-                    2014. 12. 31 PM 6:04:00     Solved most things except query when dblclick result
+                    2014. 12. 29 PM 06:01:00    Check values
+                    2014. 12. 30 PM 04:04:00    Connect all values with database
+                    2014. 12. 31 PM 02:04:00    Solve save query error
+                    2014. 12. 31 PM 06:04:00    Solved most things except query when dblclick result
+                    2014. 12. 31 PM 10:04:00    Solved dblclick result, to do fix about fixed table
 
     Author      :   yong il Kim
 --%>
 
+<%@page import="ybk.db.Custom.Account_"%>
 <%@page import="ybk.util.Compare"%>
 <%@page import="ybk.util.NNString"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -107,6 +109,15 @@
     ArrayList<String> updateCustomAcoontList = null;
     ArrayList<String> insertCustomAccountList= null;
     
+    // Query of wanted custom by double click
+    final String viewCustomContentsByDoubleClick="SELECT * FROM custom WHERE BUSI_NUM=? OR CUSTOM=?;";
+    final String viewCustomAccountContentsByDoubleClick = "SELECT * FROM account WHERE BUSI_NUM=?;";
+    // for query
+    if(ACTION_QUERY==button_type)
+    {
+        custom_val.Key.BUSI_NUM.set(request.getParameter("bc_number") );
+        custom_val.Key.CUSTOM.set(request.getParameter("bc_name") );
+    }
     // for delete
     if(ACTION_DELETE==button_type)
     {
@@ -247,8 +258,11 @@
             case ACTION_QUERY:
                 // Show custom contents
                 System.out.print("QUERY\n");
+                // Query by search key then click query button
                 if(num.length()>0)
                 {
+                    System.out.println("query by click submit button");
+                    
                     // custom is just one
                     rs = db.ExecuteQuery(viewCustomContents);
                     if(rs.next() )
@@ -260,6 +274,30 @@
                     while(rs.next() )
                     {
                         custom_val.SetAccount(rs);
+                    }
+                }
+                // Qurey by just double click of search result
+                else
+                {
+                    if(!custom_val.Key.BUSI_NUM.isEmpty()||!custom_val.Key.CUSTOM.isEmpty() )
+                    {
+                        System.out.println("query by double click");
+                        
+                        // custom is just one
+                        rs = db.ExecutePrepareQuery(viewCustomContentsByDoubleClick, 
+                                "sz", custom_val.Key.BUSI_NUM.get(2), "sz", custom_val.Key.CUSTOM.get(2));
+                        
+                        if(rs.next() )
+                        {
+                            custom_val.SetCustom(rs);
+                        }
+                        // account can have many count
+                        rs = db.ExecutePrepareQuery(viewCustomAccountContentsByDoubleClick, 
+                                "sz", custom_val.Key.BUSI_NUM.get(2));
+                        while(rs.next() )
+                        {
+                            custom_val.SetAccount(rs);
+                        }
                     }
                 }
                 session.setAttribute("B_NUMBER", custom_val.Key.BUSI_NUM.get() );
@@ -389,7 +427,7 @@
         <script type="text/javascript" src="js/manage.js" ></script>
         
         <!-- Get css what used here -->
-        <link rel="stylesheet" type="test/css" href="css/manage.css" />
+        <link rel="stylesheet" type="test/css" href="css/manage.css" ></link>
         
     </head>
     
@@ -411,7 +449,7 @@ case ACTION_DELETE:
                 }
 %>
 
-        <!-- Header - title and buttons -->
+        <!-- Title -->
         <div id="header">
             <table>
                 <tr>
@@ -470,9 +508,14 @@ case ACTION_DELETE:
             <form name="resultquery_form" id="resultquery_form" action="index.jsp" method="GET">
             <fieldset>
                 <legend>Result</legend>
-                <table id="result_table" border="1px" >
+                <table id="result_table">
                     <tr>
-                        <td>사업자 번호</td>
+                        <td>
+                            사업자 번호
+                            <input type="hidden" id="bc_name_hidden" name="bc_name" />
+                            <input type="hidden" name="getcontent_bt" value='HELLO' />
+                            <input type="hidden" id="bc_number_hidden" name="bc_number" />
+                        </td>
                         <td>거래처명</td>
                     </tr>
 <%
@@ -486,9 +529,6 @@ case ACTION_DELETE:
                                    value="<%=cus_val.get_busi_num()%>"
                                    readonly
                                    onclick='submitBusinessNumber(this);' />
-                            <input type="hidden" name="bc_number" />
-                            <input type="hidden" name="getcontent_bt" value="HELLO"/>
-                                
                         </td>
                         <td>
                             <!-- No meaning about limit maxlength -->
@@ -496,8 +536,6 @@ case ACTION_DELETE:
                                    value="<%=cus_val.get_custom()%>"
                                    readonly
                                    onclick='submitCustomName(this);' />
-                            <input type="hidden" name="bc_name" />
-                            <input type="hidden" name="getcontent_bt" value='HELLO' />
                         </td>
                     </tr>
 <%
@@ -513,15 +551,13 @@ case ACTION_DELETE:
         <div id="content" style="
              position: fixed;
              left: 300px;
-             top: 70px;
-             width: 930px;
+             top: 43px;
+             width: 950px;
              ">
-            <fieldset>
-                <legend>Content</legend>
                 <table id="button_table">
                     <!-- Buttons -->
                         <tr>
-                            <td colspan="4" width="600px">
+                            <td colspan="4" width="700px">
                             </td>
                             <td>
                                 <input class=field" type="submit" name="getcontent_bt" value="조회" />
@@ -538,7 +574,9 @@ case ACTION_DELETE:
                             </td>
                         </tr>
                 </table>
-                <table id="content_table" border="1px">
+            <fieldset>
+                <legend>Content</legend>
+                <table id="content_table">
                     <!-- Business title -->
                     <tr>
                         <td>사업자 번호</td>
@@ -562,7 +600,7 @@ case ACTION_DELETE:
                     <tr>
                         <td>거래처명</td>
                         <td colspan="7">
-                            <input class="field" type="text" name="bc_name" placeholder="business client name"
+                            <input class="full_length_field" type="text" name="bc_name" placeholder="business client name"
                                    pattern='^[가-힣a-zA-Z ]+$'
                                    oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -664,7 +702,7 @@ case ACTION_DELETE:
                     <tr>
                         <td>주소2</td>
                         <td colspan="7">
-                            <input class="field" type="text" name="address_left" placeholder="Input last address"
+                            <input class="full_length_field" type="text" name="address_left" placeholder="Input last address"
                                id="address_left" maxlength="80"
                                pattern="^[가-힣a-zA-Z0-9 ]+$"
                                oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
@@ -697,7 +735,7 @@ case ACTION_DELETE:
                     <tr>
                         <td>홈페이지</td>
                         <td colspan="7">
-                            <input class="field" type="text" name="homepage" placeholder="client homepage"
+                            <input class="full_length_field" type="text" name="homepage" placeholder="client homepage"
                                    pattern="^((http(s?))://)([0-9a-zA-Z]+.)+[a-zA-Z]{2,6}(:[0-9]+)?(S*)"
                                    oninvalid="setCustomValidity('Only allow like http(s)://www.Korea.org')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -909,7 +947,7 @@ case ACTION_DELETE:
                                    onchange="try{setCustomValidity('');}catch(e){}"
                                    value="<%=custom_val.Content.MODI_INFO_MAN.get()%>" />
                         </td>
-                        <td colspan="2">`
+                        <td colspan="2">
                             <input class="field" type="datetime-local" name="modified_date"
                                    readonly tabindex="-1" id="modified_date" 
                                    value="<%=custom_val.Content.MODI_INFO_DATE%>" />
@@ -917,22 +955,69 @@ case ACTION_DELETE:
                     </tr>
                     <!-- Account title -->
                     <tr>
-                        <td colspan="8">
+                        <td colspan="8" height="30px">
                             (거래처 계좌정보)
                         </td>
                     </tr>
                     <!-- Account contents -->
                     <tr>
-                        <td colspan="8">
-                            <table id="account_table" border="1px">
+                        <td colspan="4">
+                            <table id="account_table">
                                 <tr>
                                     <td>사무소</td>
                                     <td>은행</td>
                                     <td>계좌번호</td>
                                 </tr>
                                 <%
-                                for(Custom.Account_ acc : custom_val.AccountList)
+                                int nCount=0;
+                                // Execute when even number - 0, 2, 4, ...
+                                for(int i=0; i<custom_val.AccountList.size(); i+=2)
                                 {
+                                    Account_ acc = custom_val.AccountList.get(i);
+                                %>
+                                <tr>
+                                    <td>
+                                        <input class="field" type="text" name="office_name" placeholder="Office Name"  
+                                               id="office_name" maxlength="20"
+                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                               onchange="try{setCustomValidity('');}catch(e){}"
+                                               value="<%=acc.FACTORY.get()%>" />
+                                    </td>
+                                    <td>
+                                        <input class="field" type="text" name="bank_name" placeholder="Bank name"
+                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                               onchange="try{setCustomValidity('');}catch(e){}"
+                                               id="bank_name" maxlength="20"
+                                               value="<%=acc.TRADE_BANK.get()%>" />
+                                    </td>
+                                    <td>
+                                        <input class="field" type="text" name="account_num" placeholder="Account number"
+                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                               onchange="try{setCustomValidity('');}catch(e){}"
+                                               id="account_num" maxlength="20" 
+                                               value="<%=acc.ACCOUNT_NUM.get()%>" />
+                                    </td>
+                                </tr>
+                                <%
+                                }
+                                %>
+                            </table>
+                        </td>
+                        <td colspan="4">
+                            <table id="account_table">
+                                <tr>
+                                    <td>사무소</td>
+                                    <td>은행</td>
+                                    <td>계좌번호</td>
+                                </tr>
+                                <%
+                                // Execute when odd number - 1, 3, 5
+                                for(int i=1; i<custom_val.AccountList.size(); i+=2)
+                                {
+                                    Account_ acc = custom_val.AccountList.get(i);
                                 %>
                                 <tr>
                                     <td>
@@ -972,7 +1057,6 @@ case ACTION_DELETE:
         </form>
                             
         <!-- Fixed layout popup -->
-        <!--
         <div class="layer">
             <div class="bg"></div>
             <div id="layer2" class="pop-layer">
@@ -988,7 +1072,6 @@ case ACTION_DELETE:
                 </div>
             </div>
         </div>
-        -->
     </body>
 </html>
 <%

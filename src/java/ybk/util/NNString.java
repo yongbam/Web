@@ -28,6 +28,8 @@ public class NNString {
     {
         return m_str;
     }
+    // if 1 - return 'abc' or null
+    // if 2 - return abc or (space)
     public String get(int type)
     {
         switch(type)
@@ -37,15 +39,18 @@ public class NNString {
                     return "'"+m_str+"'";
                 else
                     return null;
+            case 2:
+                if(m_str.length()>0)
+                    return m_str;
+                else
+                    return " ";
         }
         return "";
     }
     // Same with java.lang.String.isEmpty()
     public Boolean isEmpty()
     {
-        if(m_str.length()==0 || m_str.equals("null"))
-            return true;
-        return false;
+        return m_str.length()==0 || m_str.equals("null");
     }
     public void set(String input_str)
     {

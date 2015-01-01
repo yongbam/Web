@@ -22,8 +22,10 @@ public class Custom {
         Content = new Content_();
         
         AccountList = new ArrayList();
-        Account_ acc = new Account_();
-        AccountList.add(acc);
+        Account_ acc_left = new Account_();
+        Account_ acc_right = new Account_();
+        AccountList.add(acc_left);
+        AccountList.add(acc_right);
         
     }
     // Query of save custom, not insert modified time cuz it is now created, not modified
@@ -232,15 +234,42 @@ public class Custom {
     
     public void SetAccount(NNString office_n, NNString bank_n, NNString acc_num)
     {
+        for(int i=0; i<AccountList.size(); ++i)
+        {
+            if(AccountList.get(i).ACCOUNT_NUM.get().isEmpty() )
+            {
+                Account_ acc = AccountList.get(i);
+                acc.FACTORY=office_n;
+                acc.TRADE_BANK=bank_n;
+                acc.ACCOUNT_NUM=acc_num;
+                
+                return;
+            }
+        }
+        
         Account_ acc = new Account_();
         acc.FACTORY=office_n;
         acc.TRADE_BANK=bank_n;
         acc.ACCOUNT_NUM=acc_num;
         
         AccountList.add(acc);
+        
     }
     public void SetAccount(String office_n, String bank_n, String acc_num)
     {
+        for(int i=0; i<AccountList.size(); ++i)
+        {
+            if(AccountList.get(i).ACCOUNT_NUM.get().isEmpty() )
+            {
+                Account_ acc = AccountList.get(i);
+                acc.FACTORY.set(office_n);
+                acc.TRADE_BANK.set(bank_n);
+                acc.ACCOUNT_NUM.set(acc_num);
+                
+                return;
+            }
+        }
+        
         Account_ acc = new Account_();
         acc.FACTORY.set(office_n);
         acc.TRADE_BANK.set(bank_n);

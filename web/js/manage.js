@@ -86,14 +86,14 @@ readonly id=\"bc_name\" value=\""+type+"\" size=\"23\" />";
 
 function submitBusinessNumber(elm) {
     var form = document.resultquery_form;
-
-    form.setAttribute('bc_number', elm.value);
+    form.bc_number_hidden.value = elm.value;
+    
     form.submit();
 }
 
 function submitCustomName(elm) {
     var form = document.resultquery_form;
+    form.bc_name_hidden.value = elm.value;
     
-    form.setAttribute('bc_name', elm.value);
     form.submit();
 }

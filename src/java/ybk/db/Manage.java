@@ -27,29 +27,33 @@ public class Manage {
     private Statement stmt = null;
     private PreparedStatement pstmt=null;
 
+    // parameters rule - query, sz(if value is string) or n(if value is integer), value, sz or n, value, ...
     public ResultSet ExecutePrepareQuery(final String szQueryString, String ... vars)
     {
-        
         try 
         {   
             if(rs !=null && !rs.isClosed()) rs.close();
             if(pstmt!=null && !pstmt.isClosed()) pstmt.close();
 
             pstmt = conn.prepareStatement(szQueryString);
-
+            
+            // Check
+            System.out.println("ExcutePrepareQuery values");
             for(int i=1, j=1; j<vars.length; ++i, j+=2)
             {	
-                System.out.print(Integer.toString(j-1)+":"+vars[j-1]+"\n");
-                System.out.print(Integer.toString(j)+":"+vars[j]+"\n");
-
+                System.out.println(Integer.toString(j-1)+":"+vars[j-1]);
+                System.out.println(Integer.toString(j)+":"+vars[j]);
             }
 
             for(int i=1, j=1; j<vars.length; ++i, j+=2)
             {
                 if(vars[j-1].equals("sz"))
                     pstmt.setString(i, vars[j]);
-                if(vars[j-1].equals("n"))
+                else if(vars[j-1].equals("n"))
                     pstmt.setInt(i, Integer.parseInt(vars[j]));
+                else
+                    throw new Exception("Incorrect use!!, use like ExecutePrepareQuery(query, sz or n, value, sz or n, value, ...)\n"
+                            + "if value is string use \"sz\" and if integer use \"n\"\n");
 
             }
 
@@ -62,17 +66,18 @@ public class Manage {
             {
                 pstmt.executeUpdate();
                 pstmt.close();
+                System.out.println("ExcutePrepqredQuery Successfully end");
                 return null;
             }
             else
             {
                 rs = pstmt.executeQuery();
-                pstmt.close();
+//                pstmt.close();    // if close then rs also closed
 
-                if(rs.next() )
-                    return rs;
-                else
-                    return null;
+                if(rs==null)
+                    throw new Exception("Query Failed\n");
+                
+                return rs;
             }
         }
         catch(Exception e)

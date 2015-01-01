@@ -4,11 +4,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : 2014. 12. 31, 오후 2:49:50
-    Author     : yongbam
+    Created on  : 2014. 12. 31, AM 2:49:50
+    Modified on : 2015. 01. 01. PM 7:36     Success to find what is problem 
+                                            - css could not realize '//' to comment, use another
+    Author      : yongbam
 */
 
-// Fiexed layout by Jquery for save, delete
+/* Fiexed layout by Jquery for save, delete */
 .layer
 {
     display:none; 
@@ -34,8 +36,9 @@ and open the template in the editor.
 a.cbtn {display:inline-block; height:25px; padding:0 14px 0; border:1px solid #304a8a; background-color:#3f5a9d; font-size:13px; color:#fff; line-height:25px;}	
 a.cbtn:hover {border: 1px solid #091940; background-color:#1f326a; color:#fff;}
 
-// For input text and date to fix table cell
-input[type="text"], input[type="date"]{
+/* For input text and date to fix table cell */
+input[type="text"], input[type="date"], input[type="datetime-local"]
+{
     width: 100%; 
     box-sizing: border-box;
     -webkit-box-sizing:border-box;
@@ -45,4 +48,11 @@ td
 {
    alignment-adjust: central;
 }
-        
+#content_table td
+{
+    border: 1px solid #999;
+}
+.full_length_field
+{
+    width: 50%;
+}
