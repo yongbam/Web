@@ -1,0 +1,49 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2015. 1. 1, 오후 11:35:43
+    Author     : yongbam
+*/
+div
+{
+    position: relative;
+    white-space: nowrap;
+}
+#search_div
+{
+    left: 10px;
+    top: -20px;
+    width: 290px;
+}
+#result_div
+{
+    left: 310px;
+    top: -110px;
+    width: 290px;
+}
+#button_div
+{
+    left: 500px;
+    top: -120px;
+}
+#content_div
+{
+    left: 0px;
+    top: -130px;
+    width: 900px;
+}
+#content_table_left
+{
+    width: 250px;
+}
+#content_table_right
+{
+    width: 250px;
+}
+#sub_td
+{
+    width: 150px;
+}

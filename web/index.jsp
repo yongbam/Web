@@ -426,13 +426,13 @@
         <!-- Get javascript what used here -->
         <script type="text/javascript" src="js/manage.js" ></script>
         
-        <!-- Get css what used here -->
+        <!-- Get common css -->
         <link rel="stylesheet" type="test/css" href="css/manage.css" ></link>
         
-    </head>
-    
-    <!-- body -->
-    <body>
+        <!-- Set div postion css by screen size -->
+        <link rel="stylesheet" type="text/css" media="screen and (max-width: 700px)" href="css/narrow.css" ></link>
+	<link rel="stylesheet" type="text/css" media="screen and (min-width: 701px) and (max-width: 950px)" href="css/medium.css" ></link>
+	<link rel="stylesheet" type="text/css" media="screen and (min-width: 951px)" href="css/wide.css" ></link>
         <%
                     switch(button_type)
                     {
@@ -448,30 +448,21 @@ case ACTION_DELETE:
     break;
                 }
 %>
-
+    </head>
+    <!-- body -->
+    <body>
         <!-- Title -->
         <div id="header">
-            <table>
-                <tr>
-                    <td>
-                        <h1>[실기 TEST] 거래처 관리</h1>
-                    </td>
-                </tr>
-            </table>
+            <h1>[실기 TEST] 거래처 관리</h1>
         </div>
         <!-- Search - input business number and name -->
-        <div id="search" style="
-             position: fixed;
-             left: 10px;
-             top: 70px;
-             width: 290px;
-             ">
+        <div id="search_div">
             <form name="search_form" id="search_form" action="index.jsp" method="POST">
             <fieldset>
                 <legend>Search content</legend>
                 <table>
                     <tr>
-                        <td>사업자 번호</td>
+                        <td width="90px">사업자 번호</td>
                         <td colspan="2">
                             <input class="field" type="text" name="b_number" placeholder="business number"
                                    pattern="\d{4}-\d{3}-\d{4}"
@@ -498,13 +489,7 @@ case ACTION_DELETE:
             </form>
         </div>
         <!-- Result of search -->
-        
-        <div id="result_div" style="
-             position: fixed;
-             left: 10px;
-             top: 160px;
-             width: 290px;
-             ">
+        <div id="result_div">
             <form name="resultquery_form" id="resultquery_form" action="index.jsp" method="GET">
             <fieldset>
                 <legend>Result</legend>
@@ -548,17 +533,11 @@ case ACTION_DELETE:
         </div>
         <!-- Contents of business client -->
         <form name="getcontent_form" id="getcontent_form" action="index.jsp" method="POST">
-        <div id="content" style="
-             position: fixed;
-             left: 300px;
-             top: 43px;
-             width: 950px;
-             ">
-                <table id="button_table">
-                    <!-- Buttons -->
+            <div id="content_div">
+                <!-- Buttons -->
+                <div id="button_div">
+                    <table id="button_table">
                         <tr>
-                            <td colspan="4" width="700px">
-                            </td>
                             <td>
                                 <input class=field" type="submit" name="getcontent_bt" value="조회" />
                             </td>
@@ -573,487 +552,516 @@ case ACTION_DELETE:
                                     layer_open('layer2');open(location, '_self').close();">닫기</button>
                             </td>
                         </tr>
-                </table>
-            <fieldset>
-                <legend>Content</legend>
-                <table id="content_table">
-                    <!-- Business title -->
-                    <tr>
-                        <td>사업자 번호</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="bc_number" placeholder="business client number"
-                                   pattern="\d{4}-\d{3}-\d{4}"
-                                   oninvalid="setCustomValidity('Enter invalidate number like 1111-111-1111')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   id="bc_number" value="<%=custom_val.Key.BUSI_NUM.get()%>" maxlength="20" />
-                        </td>
-                        <td>약칭</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="bcs_name" placeholder="business client short name"
-                                   pattern='^[가-힣a-zA-Z ]+$'
-                                   oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   id="bcs_name" value="<%=custom_val.Content.SHORT.get()%>" maxlength="10" />
-                        </td>
-                    </tr>
-                    <!-- Custom name -->
-                    <tr>
-                        <td>거래처명</td>
-                        <td colspan="7">
-                            <input class="full_length_field" type="text" name="bc_name" placeholder="business client name"
-                                   pattern='^[가-힣a-zA-Z ]+$'
-                                   oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                               id="bc_name" value="<%=custom_val.Key.CUSTOM.get()%>" maxlength='20' />
-                        </td>
-                    </tr>
-                    <!-- Vusiness CEO -->
-                    <tr>
-                        <td>대표자</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="ceo_name" placeholder="CEO name" 
-                                   name="ceo_name" id="ceo_name" maxlength="10"
-                                   value="<%=custom_val.Content.CEO.get()%>" />
-                        </td>
-                        <td>담당자</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="supervisor_name" placeholder="supervisor name"
-                                   id="supervisor_name" name="supervisor_name" maxlength="10"
-                                   value="<%=custom_val.Content.CHARGE_PERSON.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- 
-                    Business Type 
-                    Content from http://www.namevalue.org/?p=2702
-                    -->
-                    <tr id="business_condition">
-                        <td>업태</td>
-                        <td colspan="2">
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="bc_type" placeholder="click button" readonly
-                                   readonly id="bc_type" tabindex="-1"
-                                   value="<%=custom_val.Content.BUSI_CONDITION.get()%>" />
-                        </td>
-                        <td>
-                            <!-- Later test about hidden item -->
-                            <a href='#' ONCLICK="window.open(
-                                        'business_type_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
-                                <button type="button">검색</button>
-                            </a>
-                        </td>
-                        <td>종목</td>
-                        <td colspan="3">
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="bc_item" placeholder="click button" readonly
-                                   readonly id="bc_item" tabindex="-1"
-                                   value="<%=custom_val.Content.ITEM.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- Hide area for search business condtion items -->
-                    <tr id="search_business_condition" style="
-                        display: none;">
-                        <td colspan="8">
-                            <table>
-                                <tr 
-                                    onmouseover="ChangeColor(this, true);" 
-                                    onmouseout="ChangeColor(this, false);"
-                                    onclick="SetBusinessCondition('금융 및 보험업', '생명보험')">
-                                    <td>금융 및 보험업</td><td>생명보험</td>
-                                </tr>
-                                <tr 
-                                    onmouseover="ChangeColor(this, true);" 
-                                    onmouseout="ChangeColor(this, false);"
-                                    onclick="SetBusinessCondition('금융 및 보험업', '재보험')">
-                                    <td>금융 및 보험업</td><td>재보험</td>
-                                </tr>
-                                <tr 
-                                    onmouseover="ChangeColor(this, true);" 
-                                    onmouseout="ChangeColor(this, false);"
-                                    onclick="SetBusinessCondition('금융 및 보험업', '화재보험')">
-                                    <td>금융 및 보험업</td><td>화재보험</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <!-- Address -->
-                    <tr>
-                        <td>우편번호</td>
-                        <td colspan="2">
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="post_number" placeholder="Click search button" 
-                                   readonly id="post_number" tabindex="-1"
-                                   value="<%=custom_val.Content.POST_NUM.get()%>" />
-                        </td>
-                        <td>
-                            <a href='#' ONCLICK="window.open(
-                                        'zipcode_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
-                                <button type="button">검색</button>
-                            </a>
-                        </td>
-                        <td>주소1</td>
-                        <td colspan="3">
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="address" placeholder="Click search button"
-                                   readonly id="address" tabindex="-1"
-                                   value="<%=custom_val.Content.ADDR1.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- Last address -->
-                    <tr>
-                        <td>주소2</td>
-                        <td colspan="7">
-                            <input class="full_length_field" type="text" name="address_left" placeholder="Input last address"
-                               id="address_left" maxlength="80"
-                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                               onchange="try{setCustomValidity('');}catch(e){}"
-                               value="<%=custom_val.Content.ADDR2.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- Call number -->
-                    <tr>
-                        <td>전화번호</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="tel_num" placeholder="call number"
-                                   patern="^[0]\d{1,2}-\d{3,4}-\d{4}"
-                                   oninvalid="setCustomValidity('Only allow like 02(010)-1234(123)-5678')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   id="tel_num" maxlength="13"
-                                   value="<%=custom_val.Content.TEL.get()%>" />
-                        </td>
-                        <td>팩스번호</td>
-                        <td colspan="3">
-                            <input class="field" type="text" name="fax_num" placeholder="fax number"
-                                   pattern="^[0]\d{1,2}-\d{3,4}-\d{4}"
-                                   oninvalid="setCustomValidity('Only allow like 02-1234-5678')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   id="fax_num" maxlength="13"
-                                   value="<%=custom_val.Content.FAX.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- Homepage -->
-                    <tr>
-                        <td>홈페이지</td>
-                        <td colspan="7">
-                            <input class="full_length_field" type="text" name="homepage" placeholder="client homepage"
-                                   pattern="^((http(s?))://)([0-9a-zA-Z]+.)+[a-zA-Z]{2,6}(:[0-9]+)?(S*)"
-                                   oninvalid="setCustomValidity('Only allow like http(s)://www.Korea.org')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   id="homepage" maxlength="20"
-                                   value="<%=custom_val.Content.HOMEPAGE.get()%>" />
-                        </td>
-                    </tr>
-                    <!-- Combo box -->
-                    <tr>
-                        <td>법인여부</td>
-                        <td colspan="1">
-                            <input type="radio" name="business_type" value="company" 
-                                   <%
-                                   if(custom_val.Content.CO_YN)
-                                   {
-                                   %>
-                                   checked />법인
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />법인
-                                       <%
-                                   }
-                                   %>                                   
-                            <input type="radio" name="business_type" value="private"
-                                   <%
-                                   if(!custom_val.Content.CO_YN)
-                                   {
-                                   %>
-                                   checked />개인
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />국외
-                                       <%
-                                   }
-                                   %>
-                        </td>
-                        <td colspan="2"></td>
-                        <td>해외여부</td>
-                        <td colspan="3">
-                            <input type="radio" name="location_type" value="in"
-                                   <%
-                                   if(custom_val.Content.FOREIGN_YN)
-                                   {
-                                   %>
-                                   checked />국내
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />국내
-                                       <%
-                                   }
-                                   %>
-                            <input type="radio" name="location_type" value="out"
-                                   <%
-                                   if(!custom_val.Content.FOREIGN_YN)
-                                   {
-                                   %>
-                                   checked />국외
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />국외
-                                       <%
-                                   }
-                                   %>
-                        </td>
-                    </tr>
-                    <!-- Country -->
-                    <tr>
-                        <td>과세구분</td>
-                        <td colspan="3">
-                            <select name="tax_yn">
-                                <option 
+                    </table>
+                </div>
+                <fieldset>
+                    <legend>Content</legend>
+                    <table id="content_table">
+                        <!-- Business title -->
+                        <tr>
+                            <td id="sub_td">사업자 번호</td>
+                            <td colspan="3">
+                                <input class="field" type="text" name="bc_number" placeholder="business client number"
+                                       pattern="\d{4}-\d{3}-\d{4}"
+                                       oninvalid="setCustomValidity('Enter invalidate number like 1111-111-1111')"
+                                       onchange="try{setCustomValidity('');}catch(e){}"
+                                       id="bc_number" value="<%=custom_val.Key.BUSI_NUM.get()%>" maxlength="20" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id="content_table_left">
+                                    <!-- Custom name -->
+                                    <tr>
+                                        <td id="sub_td">거래처명</td>
+                                        <td colspan="4">
+                                            <input class="full_length_field" type="text" name="bc_name" placeholder="business client name"
+                                                   pattern='^[가-힣a-zA-Z ]+$'
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                               id="bc_name" value="<%=custom_val.Key.CUSTOM.get()%>" maxlength='20' />
+                                        </td>
+                                    </tr>
+                                    <!-- Business CEO -->
+                                    <tr>
+                                        <td id="sub_td">대표자</td>
+                                        <td colspan="4">
+                                            <input class="field" type="text" name="ceo_name" placeholder="CEO name" 
+                                                   name="ceo_name" id="ceo_name" maxlength="10"
+                                                   value="<%=custom_val.Content.CEO.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Business Type, Content from http://www.namevalue.org/?p=2702 -->
+                                    <tr id="business_condition">
+                                        <td id="sub_td">업태</td>
+                                        <td colspan="3">
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="bc_type" placeholder="click button" readonly
+                                                   readonly id="bc_type" tabindex="-1"
+                                                   value="<%=custom_val.Content.BUSI_CONDITION.get()%>" />
+                                        </td>
+                                        <td>
+                                            <!-- Later test about hidden item -->
+                                            <a href='#' ONCLICK="window.open(
+                                                        'business_type_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
+                                                <button type="button">검색</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- Hide area for search business condtion items -->
+                                    <tr id="search_business_condition" style="
+                                        display: none;">
+                                        <td colspan="5">
+                                            <table>
+                                                <tr 
+                                                    onmouseover="ChangeColor(this, true);" 
+                                                    onmouseout="ChangeColor(this, false);"
+                                                    onclick="SetBusinessCondition('금융 및 보험업', '생명보험')">
+                                                    <td>금융 및 보험업</td><td>생명보험</td>
+                                                </tr>
+                                                <tr 
+                                                    onmouseover="ChangeColor(this, true);" 
+                                                    onmouseout="ChangeColor(this, false);"
+                                                    onclick="SetBusinessCondition('금융 및 보험업', '재보험')">
+                                                    <td>금융 및 보험업</td><td>재보험</td>
+                                                </tr>
+                                                <tr 
+                                                    onmouseover="ChangeColor(this, true);" 
+                                                    onmouseout="ChangeColor(this, false);"
+                                                    onclick="SetBusinessCondition('금융 및 보험업', '화재보험')">
+                                                    <td>금융 및 보험업</td><td>화재보험</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <!-- Post number -->
+                                    <tr>
+                                        <td id="sub_td">우편번호</td>
+                                        <td colspan="3" width="120px">
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="post_number" placeholder="Click search button" 
+                                                   readonly id="post_number" tabindex="-1"
+                                                   value="<%=custom_val.Content.POST_NUM.get()%>" />
+                                        </td>
+                                        <td>
+                                            <a href='#' ONCLICK="window.open(
+                                                        'zipcode_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
+                                                <button type="button">검색</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- Tell number -->
+                                    <tr>
+                                        <td id="sub_td">전화번호</td>
+                                        <td colspan="4">
+                                            <input class="field" type="text" name="tel_num" placeholder="call number"
+                                                   patern="^[0]\d{1,2}-\d{3,4}-\d{4}"
+                                                   oninvalid="setCustomValidity('Only allow like 02(010)-1234(123)-5678')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="tel_num" maxlength="13"
+                                                   value="<%=custom_val.Content.TEL.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Fax number -->
+                                    <tr>
+                                        <td>팩스번호</td>
+                                        <td colspan="4">
+                                            <input class="field" type="text" name="fax_num" placeholder="fax number"
+                                                   pattern="^[0]\d{1,2}-\d{3,4}-\d{4}"
+                                                   oninvalid="setCustomValidity('Only allow like 02-1234-5678')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="fax_num" maxlength="13"
+                                                   value="<%=custom_val.Content.FAX.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Combo box -->
+                                    <tr>
+                                        <td id="sub_td">법인여부</td>
+                                        <td colspan="4">
+                                            <input type="radio" name="business_type" value="company" 
+                                                   <%
+                                                   if(custom_val.Content.CO_YN)
+                                                   {
+                                                   %>
+                                                   checked />법인
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />법인
+                                                       <%
+                                                   }
+                                                   %>                                   
+                                            <input type="radio" name="business_type" value="private"
+                                                   <%
+                                                   if(!custom_val.Content.CO_YN)
+                                                   {
+                                                   %>
+                                                   checked />개인
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />국외
+                                                       <%
+                                                   }
+                                                   %>
+                                        </td>
+                                    </tr>
+                                    <!-- Check box -->
+                                    <tr>
+                                        <td id="sub_td">특수관계자</td>
+                                        <td colspan="1">
+                                            <input type="checkbox" name="special_relation" value="special_relation" 
+                                                   <%
+                                                   if(custom_val.Content.SPECIAL_RELATION)
+                                                   {
+                                                   %>
+                                                   checked />
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />
+                                                       <%
+                                                   }
+                                                   %>
+                                        </td>
+                                        <td width="60px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td style="width: 60px;">거래중지</td>
+                                        <td colspan="1">
+                                            <input type="checkbox" name="trade_stop" value="trade_stop"
+                                                   <%
+                                                   if(custom_val.Content.TRADE_STOP)
+                                                   {
+                                                   %>
+                                                   checked />
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />
+                                                       <%
+                                                   }
+                                                   %>
+                                        </td>
+                                    </tr>
+                                    <!-- Submited date -->
+                                    <tr>
+                                        <td>등록정보</div></td>
+                                        <td colspan="2">
+                                            <input class="field" type="text" name="registered_name" placeholder="Write name who registerd"  
+                                               id="registered_name" maxlength="10"
+                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                               onchange="try{setCustomValidity('');}catch(e){}"
+                                               value="<%=custom_val.Content.REGI_INFO_MAN.get()%>" />
+                                        </td>
+                                        <td colspan="2" style="width: 30px;">
+                                            <input class="field" type="datetime-local" name="registered_date" 
+                                                   readonly id="registered_date" tabindex="-1"
+                                                   value="<%=custom_val.Content.REGI_INFO_DATE%>" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table id="content_table_right">
+                                    <!-- Business company short name -->
+                                    <tr>
+                                        <td id="sub_td">약칭</td>
+                                        <td colspan="3">
+                                            <input class="field" type="text" name="bcs_name" placeholder="business client short name"
+                                                   pattern='^[가-힣a-zA-Z ]+$'
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="bcs_name" value="<%=custom_val.Content.SHORT.get()%>" maxlength="10" />
+                                        </td>
+                                    </tr>
+                                    <!-- Charge person name -->
+                                    <tr>
+                                        <td id="sub_td">담당자</td>
+                                        <td colspan="3">
+                                            <input class="field" type="text" name="supervisor_name" placeholder="supervisor name"
+                                                   id="supervisor_name" name="supervisor_name" maxlength="10"
+                                                   value="<%=custom_val.Content.CHARGE_PERSON.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Bunisess type item -->
+                                    <tr>
+                                        <td id="sub_td">종목</td>
+                                        <td colspan="3">
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="bc_item" placeholder="click button" readonly
+                                                   readonly id="bc_item" tabindex="-1"
+                                                   value="<%=custom_val.Content.ITEM.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Address 1 by click search -->
+                                    <tr>
+                                        <td id="sub_td">주소1</td>
+                                        <td colspan="3">
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="address" placeholder="Click search button"
+                                                   readonly id="address" tabindex="-1"
+                                                   value="<%=custom_val.Content.ADDR1.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Last address -->
+                                    <tr>
+                                        <td id="sub_td">주소2</td>
+                                        <td colspan="7">
+                                            <input class="full_length_field" type="text" name="address_left" placeholder="Input last address"
+                                               id="address_left" maxlength="80"
+                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                               onchange="try{setCustomValidity('');}catch(e){}"
+                                               value="<%=custom_val.Content.ADDR2.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <!-- Is foreign ? or not ? -->
+                                    <tr>
+                                        <td id="sub_td">해외여부</td>
+                                        <td>
+                                            <input type="radio" name="location_type" value="in"
+                                                   <%
+                                                   if(custom_val.Content.FOREIGN_YN)
+                                                   {
+                                                   %>
+                                                   checked />국내
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />국내
+                                                       <%
+                                                   }
+                                                   %>
+                                            <input type="radio" name="location_type" value="out"
+                                                   <%
+                                                   if(!custom_val.Content.FOREIGN_YN)
+                                                   {
+                                                   %>
+                                                   checked />국외
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       />국외
+                                                       <%
+                                                   }
+                                                   %>
+                                        </td>
+                                        <!-- Country -->
+                                        <td>과세구분</td>
+                                        <td>
+                                            <select name="tax_yn">
+                                                <option 
+                                                    <%
+                                                   if(custom_val.Content.TAX_YN)
+                                                   {
+                                                   %>
+                                                   selected="selected" >과세</option>
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       >과세</option>
+                                                       <%
+                                                   }
+                                                   %>
+                                                <option
+                                                    <%
+                                                   if(!custom_val.Content.TAX_YN)
+                                                   {
+                                                   %>
+                                                   selected="selected" >면세</option>
+                                                   <%
+                                                   }
+                                                   else
+                                                   {
+                                                       %>
+                                                       >면세</option>
+                                                       <%
+                                                   }
+                                                   %>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td id="sub_td">국가</td>
+                                        <td>
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="country_name" placeholder="Click Button"
+                                                   readonly id="country_code" tabindex="-1"
+                                                   value="<%=custom_val.Content.COUNTRY_KOR.get()%>" />
+                                        </td>
+                                        <td>
+                                            <!-- No meaning about limited maxlength cuz get from another popup window -->
+                                            <input class="field" type="text" name="country_code" placeholder=""
+                                                   readonly id="country_name" tabindex="-1"
+                                                   value="<%=custom_val.Content.COUNTRY_ENG.get()%>" />
+                                        </td>
+                                        <td>
+                                            <a href='#' ONCLICK="window.open(
+                                                        'country_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
+                                                <button type="button">검색</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <!-- Connected date -->
+                                    <tr>
+                                        <td id="sub_td">계약기간</td>
+                                        <td colspan="1">
+                                            <input class="field" type="date" name="contract_start"  
+                                               id="contract_start" value="<%=custom_val.Content.CONTRACT_PERIOD_S%>" size="23" />
+                                        </td>
+                                        <td>~</td>
+                                        <td colspan="1">
+                                            <input class="field" type="date" name="contract_end"  
+                                               id="contract_end" value="<%=custom_val.Content.CONTRACT_PERIOD_E%>" size="23" />
+                                        </td>
+                                    </tr>
+                                    <!-- Modified information -->
+                                    <tr>
+                                        <td id="sub_td">변경정보</td>
+                                        <td>
+                                            <input class="field" type="text" name="modified_name" placeholder="Write name who modified"  
+                                                   id="modified_name" maxlength="10"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   value="<%=custom_val.Content.MODI_INFO_MAN.get()%>" />
+                                        </td>
+                                        <td colspan="2">
+                                            <input class="field" type="datetime-local" name="modified_date"
+                                                   readonly tabindex="-1" id="modified_date" 
+                                                   value="<%=custom_val.Content.MODI_INFO_DATE%>" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- Homepage -->
+                        <tr>
+                            <td id="sub_td">홈페이지</td>
+                            <td colspan="3">
+                                <input class="full_length_field" type="text" name="homepage" placeholder="client homepage"
+                                       pattern="^((http(s?))://)([0-9a-zA-Z]+.)+[a-zA-Z]{2,6}(:[0-9]+)?(S*)"
+                                       oninvalid="setCustomValidity('Only allow like http(s)://www.Korea.org')"
+                                       onchange="try{setCustomValidity('');}catch(e){}"
+                                       id="homepage" maxlength="20"
+                                       value="<%=custom_val.Content.HOMEPAGE.get()%>" />
+                            </td>
+                        </tr>
+                        <!-- Account title -->
+                        <tr>
+                            <td colspan="2" height="30px">
+                                (거래처 계좌정보)
+                            </td>
+                        </tr>
+                        <!-- Account contents -->
+                        <tr>
+                            <td>
+                                <table id="account_table">
+                                    <tr>
+                                        <td>사무소</td>
+                                        <td>은행</td>
+                                        <td>계좌번호</td>
+                                    </tr>
                                     <%
-                                   if(custom_val.Content.TAX_YN)
-                                   {
-                                   %>
-                                   selected="selected" >과세</option>
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       >과세</option>
-                                       <%
-                                   }
-                                   %>
-                                <option
+                                    int nCount=0;
+                                    // Execute when even number - 0, 2, 4, ...
+                                    for(int i=0; i<custom_val.AccountList.size(); i+=2)
+                                    {
+                                        Account_ acc = custom_val.AccountList.get(i);
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <input class="field" type="text" name="office_name" placeholder="Office Name"  
+                                                   id="office_name" maxlength="20"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   value="<%=acc.FACTORY.get()%>" />
+                                        </td>
+                                        <td>
+                                            <input class="field" type="text" name="bank_name" placeholder="Bank name"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="bank_name" maxlength="20"
+                                                   value="<%=acc.TRADE_BANK.get()%>" />
+                                        </td>
+                                        <td>
+                                            <input class="field" type="text" name="account_num" placeholder="Account number"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="account_num" maxlength="20" 
+                                                   value="<%=acc.ACCOUNT_NUM.get()%>" />
+                                        </td>
+                                    </tr>
                                     <%
-                                   if(!custom_val.Content.TAX_YN)
-                                   {
-                                   %>
-                                   selected="selected" >면세</option>
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       >면세</option>
-                                       <%
-                                   }
-                                   %>
-                            </select>
-                        </td>
-                        <td>국가</td>
-                        <td>
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="country_code" placeholder=""
-                                   readonly id="country_code" tabindex="-1"
-                                   value="<%=custom_val.Content.COUNTRY_ENG.get()%>" />
-                        </td>
-                        <td>
-                            <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="country_name" placeholder="Click Button"
-                                   readonly id="country_name" tabindex="-1"
-                                   value="<%=custom_val.Content.COUNTRY_KOR.get()%>" />
-                        </td>
-                        <td>
-                            <a href='#' ONCLICK="window.open(
-                                        'country_search.jsp','win','width=450,height=350,\n\menubar=no,scrollbars=yes');return false">
-                                <button type="button">검색</button>
-                            </a>
-                        </td>
-                    </tr>
-                    <!-- Check box -->
-                    <tr>
-                        <td>특수관계자</td>
-                        <td colspan="3">
-                            <input type="checkbox" name="special_relation" value="special_relation" 
-                                   <%
-                                   if(custom_val.Content.SPECIAL_RELATION)
-                                   {
-                                   %>
-                                   checked />
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />
-                                       <%
-                                   }
-                                   %>
-                        </td>
-                        <td>거래중지</td>
-                        <td colspan="3">
-                            <input type="checkbox" name="trade_stop" value="trade_stop"
-                                   <%
-                                   if(custom_val.Content.TRADE_STOP)
-                                   {
-                                   %>
-                                   checked />
-                                   <%
-                                   }
-                                   else
-                                   {
-                                       %>
-                                       />
-                                       <%
-                                   }
-                                   %>
-                        </td>
-                    </tr>
-                    <!-- Connected date -->
-                    <tr>
-                        <td>계약기간</td>
-                        <td colspan="1">
-                            <input class="field" type="date" name="contract_start"  
-                               id="contract_start" value="<%=custom_val.Content.CONTRACT_PERIOD_S%>" size="23" />
-                        </td>
-                        <td>~</td>
-                        <td colspan="1">
-                            <input class="field" type="date" name="contract_end"  
-                               id="contract_end" value="<%=custom_val.Content.CONTRACT_PERIOD_E%>" size="23" />
-                        </td>
-                    </tr>
-                    <!-- Submited date -->
-                    <tr>
-                        <td>등록정보</td>
-                        <td>
-                            <input class="field" type="text" name="registered_name" placeholder="Write name who registerd"  
-                               id="registered_name" maxlength="10"
-                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                               onchange="try{setCustomValidity('');}catch(e){}"
-                               value="<%=custom_val.Content.REGI_INFO_MAN.get()%>" />
-                        </td>
-                        <td colspan="2">
-                            <input class="field" type="datetime-local" name="registered_date" 
-                                   readonly id="registered_date" tabindex="-1"
-                                   value="<%=custom_val.Content.REGI_INFO_DATE%>" />
-                        </td>
-                        <td>변경정보</td>
-                        <td>
-                            <input class="field" type="text" name="modified_name" placeholder="Write name who modified"  
-                                   id="modified_name" maxlength="10"
-                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                   onchange="try{setCustomValidity('');}catch(e){}"
-                                   value="<%=custom_val.Content.MODI_INFO_MAN.get()%>" />
-                        </td>
-                        <td colspan="2">
-                            <input class="field" type="datetime-local" name="modified_date"
-                                   readonly tabindex="-1" id="modified_date" 
-                                   value="<%=custom_val.Content.MODI_INFO_DATE%>" />
-                        </td>
-                    </tr>
-                    <!-- Account title -->
-                    <tr>
-                        <td colspan="8" height="30px">
-                            (거래처 계좌정보)
-                        </td>
-                    </tr>
-                    <!-- Account contents -->
-                    <tr>
-                        <td colspan="4">
-                            <table id="account_table">
-                                <tr>
-                                    <td>사무소</td>
-                                    <td>은행</td>
-                                    <td>계좌번호</td>
-                                </tr>
-                                <%
-                                int nCount=0;
-                                // Execute when even number - 0, 2, 4, ...
-                                for(int i=0; i<custom_val.AccountList.size(); i+=2)
-                                {
-                                    Account_ acc = custom_val.AccountList.get(i);
-                                %>
-                                <tr>
-                                    <td>
-                                        <input class="field" type="text" name="office_name" placeholder="Office Name"  
-                                               id="office_name" maxlength="20"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               value="<%=acc.FACTORY.get()%>" />
-                                    </td>
-                                    <td>
-                                        <input class="field" type="text" name="bank_name" placeholder="Bank name"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               id="bank_name" maxlength="20"
-                                               value="<%=acc.TRADE_BANK.get()%>" />
-                                    </td>
-                                    <td>
-                                        <input class="field" type="text" name="account_num" placeholder="Account number"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               id="account_num" maxlength="20" 
-                                               value="<%=acc.ACCOUNT_NUM.get()%>" />
-                                    </td>
-                                </tr>
-                                <%
-                                }
-                                %>
-                            </table>
-                        </td>
-                        <td colspan="4">
-                            <table id="account_table">
-                                <tr>
-                                    <td>사무소</td>
-                                    <td>은행</td>
-                                    <td>계좌번호</td>
-                                </tr>
-                                <%
-                                // Execute when odd number - 1, 3, 5
-                                for(int i=1; i<custom_val.AccountList.size(); i+=2)
-                                {
-                                    Account_ acc = custom_val.AccountList.get(i);
-                                %>
-                                <tr>
-                                    <td>
-                                        <input class="field" type="text" name="office_name" placeholder="Office Name"  
-                                               id="office_name" maxlength="20"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               value="<%=acc.FACTORY.get()%>" />
-                                    </td>
-                                    <td>
-                                        <input class="field" type="text" name="bank_name" placeholder="Bank name"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               id="bank_name" maxlength="20"
-                                               value="<%=acc.TRADE_BANK.get()%>" />
-                                    </td>
-                                    <td>
-                                        <input class="field" type="text" name="account_num" placeholder="Account number"
-                                               pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                               oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
-                                               onchange="try{setCustomValidity('');}catch(e){}"
-                                               id="account_num" maxlength="20" 
-                                               value="<%=acc.ACCOUNT_NUM.get()%>" />
-                                    </td>
-                                </tr>
-                                <%
-                                }
-                                %>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </fieldset>
-        </div>
+                                    }
+                                    %>
+                                </table>
+                            </td>
+                            <td>
+                                <table id="account_table">
+                                    <tr>
+                                        <td>사무소</td>
+                                        <td>은행</td>
+                                        <td>계좌번호</td>
+                                    </tr>
+                                    <%
+                                    // Execute when odd number - 1, 3, 5
+                                    for(int i=1; i<custom_val.AccountList.size(); i+=2)
+                                    {
+                                        Account_ acc = custom_val.AccountList.get(i);
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <input class="field" type="text" name="office_name" placeholder="Office Name"  
+                                                   id="office_name" maxlength="20"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   value="<%=acc.FACTORY.get()%>" />
+                                        </td>
+                                        <td>
+                                            <input class="field" type="text" name="bank_name" placeholder="Bank name"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="bank_name" maxlength="20"
+                                                   value="<%=acc.TRADE_BANK.get()%>" />
+                                        </td>
+                                        <td>
+                                            <input class="field" type="text" name="account_num" placeholder="Account number"
+                                                   pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                                   oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                                   onchange="try{setCustomValidity('');}catch(e){}"
+                                                   id="account_num" maxlength="20" 
+                                                   value="<%=acc.ACCOUNT_NUM.get()%>" />
+                                        </td>
+                                    </tr>
+                                    <%
+                                    }
+                                    %>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
         </form>
                             
         <!-- Fixed layout popup -->
