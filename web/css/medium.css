@@ -7,6 +7,10 @@ and open the template in the editor.
     Created on : 2015. 1. 1, 오후 11:35:43
     Author     : yongbam
 */
+#sub_td
+{
+    width: 30px;
+}
 div
 {
     position: relative;
@@ -14,36 +18,42 @@ div
 }
 #search_div
 {
-    left: 10px;
-    top: -20px;
+    left: 350px;
+    top: -10px;
     width: 290px;
 }
 #result_div
 {
-    left: 310px;
-    top: -110px;
+    left: 350px;
+    top: -10px;
     width: 290px;
+}
+#business_number_div
+{
+    left: 0px;
+    top: -245px;
+    width: 350px;
+}
+#important_info_div
+{
+    left: 0px;
+    top: -245px;
+    width: 350px;
 }
 #button_div
 {
-    left: 500px;
-    top: -120px;
+    left: 450px;
+    top: -245px;
 }
-#content_div
+#Other_info_div
 {
     left: 0px;
-    top: -130px;
-    width: 900px;
+    top: -240px;
+    width: 550px;
 }
-#content_table_left
+#account_detail_div
 {
-    width: 250px;
-}
-#content_table_right
-{
-    width: 250px;
-}
-#sub_td
-{
-    width: 150px;
+    left: 0px;
+    top: -230px;
+    width: 550px;
 }

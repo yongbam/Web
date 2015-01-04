@@ -7,43 +7,53 @@ and open the template in the editor.
     Created on : 2015. 1. 1, 오후 11:35:22
     Author     : yongbam
 */
+#sub_td
+{
+    width: 30px;
+}
 div
 {
-    position: fixed;
+    position: relative;
+    white-space: nowrap;
 }
 #search_div
 {
     left: 10px;
-    top: 70px;
+    top: -10px;
     width: 290px;
 }
 #result_div
 {
     left: 10px;
-    top: 160px;
+    top: -10px;
     width: 290px;
+}
+#business_number_div
+{
+    left: 300px;
+    top: -245px;
+    width: 350px;
+}
+#important_info_div
+{
+    left: 300px;
+    top: -245px;
+    width: 350px;
 }
 #button_div
 {
-    left: 950px;
-    top: 40px;
+    left: 1000px;
+    top: -245px;
 }
-#content_div
+#Other_info_div
 {
-    white-space: nowrap;
-    left: 300px;
-    top: 70px;
-    width: 800px;
+    left: 650px;
+    top: -590px;
+    width: 550px;
 }
-#content_table_left
+#account_detail_div
 {
-    width: 250px;
-}
-#content_table_right
-{
-    width: 250px;
-}
-#sub_td
-{
-    width: 150px;
+    left: 650px;
+    top: -590px;
+    width: 550px;
 }

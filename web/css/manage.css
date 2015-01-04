@@ -48,7 +48,7 @@ td
 {
    alignment-adjust: central;
 }
-#content_table td
+table td
 {
     border: 1px solid #999;
 }
