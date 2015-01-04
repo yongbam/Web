@@ -22,10 +22,8 @@ public class Custom {
         Content = new Content_();
         
         AccountList = new ArrayList();
-        Account_ acc_left = new Account_();
-        Account_ acc_right = new Account_();
-        AccountList.add(acc_left);
-        AccountList.add(acc_right);
+        Account_ acc = new Account_();
+        AccountList.add(acc);
         
     }
     // Query of save custom, not insert modified time cuz it is now created, not modified

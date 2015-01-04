@@ -4,7 +4,7 @@
     Author     : yongbam
 --%>
 
-<%@page import="ybk.db.Business_type"%>
+<%@page import="data.custom.Business_type"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -23,7 +23,7 @@
         <script Language="JavaScript"> 
             function Zip_search() { 
                 if (document.Zip.address.value.length == 0) { 
-                    alert("찾으시는 동이름을 입력하시오."); 
+                    alert("찾으시는 업태를 입력하세요."); 
                     document.Zip.address.focus(); 
                     return false; 
                 } 
@@ -50,7 +50,7 @@
                     } 
                 } 
                 if( i==dck.zip_chk.length ) { 
-                    alert("해당 주소를 선택하십시요."); 
+                    alert("해당 업태 및 종목을 선택하십시요."); 
                 } 
                 else {
                     window.opener.document.getcontent_form.bc_type.value=type;
@@ -63,14 +63,14 @@
     </head>
     <body  onload="document.Zip.address.focus()">
         <center>
-        <font color=Green size=3>Search business type Name - Step</font> 
+        <font color=Green size=3>업태 및 업종 검색</font> 
         <hr size=0 width=95%> 
-        <font>Input business type.<br> 예) '금융 및 보험업' , 'IT' , '...'</font> 
+        <font>업태를 입력하세요.<br>예) '금융 및 보험업' , 'IT' , '...'</font> 
         <p> 
         <form method="POST" name="Zip" onSubmit="return Zip_search();"> 
             <hr size=0 width=95%> 
             <input type="text" name="address" size="20" maxlength="20" value="" style='border:solid 1;'> 
-            <button onclick="Zip_search()">OK</button>
+            <button onclick="Zip_search()">업태 찾기</button>
             <hr size=0 width=95%> 
         </form> 
         <table border=0 width=90%><tr><td> 
@@ -122,7 +122,7 @@
             if(!isExist)
             {
                 %>
-                Couldn't find country
+                해당 업태를 찾지 못하였습니다.
                 <%
             }
             else
@@ -145,7 +145,7 @@
                 %>
                         <hr size=0>
                         <center>
-                            <button onclick="confirm(document.check);">OK</button>
+                            <button onclick="confirm(document.check);">업태 및 업종 입력</button>
                         </center>
                     </form>
                 <%

@@ -11,14 +11,15 @@ $(document).ready(function(){
             $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
         }
     });
-});
-        
+});        
+
 // If enter on account_num then add next row
 function AddNewAccountInputRow()
 {
     var table = document.getElementById("account_table");
     var row_count = $('#account_table tr').length;
     var row = table.insertRow(row_count);
+    
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
@@ -26,7 +27,6 @@ function AddNewAccountInputRow()
     cell1.innerHTML="<input class=\"field\" type=\"text\" name=\"office_name\" placeholder=\"Office Name\" id=\"office_name\" value=\"\" />";
     cell2.innerHTML="<input class=\"field\" type=\"text\" name=\"bank_name\" placeholder=\"Bank name\" id=\"bank_name\" value=\"\" />";
     cell3.innerHTML="<input class=\"field\" type=\"text\" name=\"account_num\" placeholder=\"Account number\" id=\"account_num\" value=\"\" onfocusout='AddNewAccountInputRow()' />";
-
 }
 
 // Fiexed layout by Jquery for save, delete
@@ -84,6 +84,7 @@ readonly id=\"bc_name\" value\""+content+"\" size=\"23\" />";
 readonly id=\"bc_name\" value=\""+type+"\" size=\"23\" />";
 }
 
+// When dbl click business number of result div then send number to request
 function submitBusinessNumber(elm) {
     var form = document.resultquery_form;
     form.bc_number_hidden.value = elm.value;
@@ -91,6 +92,7 @@ function submitBusinessNumber(elm) {
     form.submit();
 }
 
+// When dbl click custom name of result div then send name to request
 function submitCustomName(elm) {
     var form = document.resultquery_form;
     form.bc_name_hidden.value = elm.value;
@@ -98,6 +100,7 @@ function submitCustomName(elm) {
     form.submit();
 }
 
+// Clear all contents of custom, not save or delete on database
 function initialize()
 {
     var input_boxes = document.getElementsByClassName("field");
@@ -108,6 +111,7 @@ function initialize()
         });
 }
 
+// Reorder html and show print window
 function printDocument()
 {
     var before = document.body.innerHTML;

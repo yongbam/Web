@@ -1,15 +1,16 @@
 <%-- 
-    Document    :   index
+    Document   :   index
     Created on  :   2014. 12. 29,AM 09:27:09    Start
-    Part        :   2014. 12. 29 AM 11:00:00    UI partly
-                    2014. 12. 29 PM 06:01:00    Check values
-                    2014. 12. 30 PM 04:04:00    Connect all values with database
-                    2014. 12. 31 PM 02:04:00    Solve save query error
-                    2014. 12. 31 PM 06:04:00    Solved most things except query when dblclick result
-                    2014. 12. 31 PM 10:04:00    Solved dblclick result, to do fix about fixed table
-                    2015. 01. 01 PM 01:04:00    Add to git hub
-                    2015. 01. 03 AM 11:09:00    Start modify some user interface, some java move to other library
-                    2015. 01. 03 PM 03:09:00    Add multi language base
+    Part           :   2014. 12. 29 AM 11:00:00    UI partly
+                        2014. 12. 29 PM 06:01:00    Check values
+                        2014. 12. 30 PM 04:04:00    Connect all values with database
+                        2014. 12. 31 PM 02:04:00    Solve save query error
+                        2014. 12. 31 PM 06:04:00    Solved most things except query when dblclick result
+                        2014. 12. 31 PM 10:04:00    Solved dblclick result, to do fix about fixed table
+                        2015. 01. 01 PM 01:04:00    Add to git hub
+                        2015. 01. 03 AM 11:09:00    Start modify some user interface, some java move to other library
+                        2015. 01. 03 PM 03:09:00    Add multi language base
+                        2015. 01. 03 PM 11:00:00    Check some buttons
 
     Author      :   yong il Kim
 --%>
@@ -850,13 +851,13 @@ case ACTION_DELETE:
                             <td>
                                 <!-- No meaning about limited maxlength cuz get from another popup window -->
                                 <input class="field" type="text" name="country_name" placeholder="Click Button"
-                                       readonly id="country_code" tabindex="-1"
+                                       readonly id="country_name" tabindex="-1"
                                        value="<%=custom_val.Content.COUNTRY_KOR.get()%>" />
                             </td>
                             <td>
                                 <!-- No meaning about limited maxlength cuz get from another popup window -->
                                 <input class="field" type="text" name="country_code" placeholder=""
-                                       readonly id="country_name" tabindex="-1"
+                                       readonly id="country_code" tabindex="-1"
                                        value="<%=custom_val.Content.COUNTRY_ENG.get()%>" />
                             </td>
                             <td>
@@ -901,7 +902,7 @@ case ACTION_DELETE:
                                        }
                                        %>
                             </td>
-                            <!-- Country -->
+                            <!-- About tax -->
                             <td>과세구분</td>
                             <td>
                                 <select name="tax_yn">
@@ -993,9 +994,6 @@ case ACTION_DELETE:
                 <fieldset>
                     <legend>거래처 계좌정보</legend>
                     <table id="account_table">
-                    <tr>
-                    <td>
-                        <table id="account_table">
                             <tr>
                                 <td>사무소</td>
                                 <td>은행</td>
@@ -1010,14 +1008,14 @@ case ACTION_DELETE:
                                 <td>
                                     <input class="field" type="text" name="office_name" placeholder="Office Name"  
                                            id="office_name" maxlength="20"
-                                           pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                           pattern="^[가-힣a-zA-Z0-9]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
                                            value="<%=acc.FACTORY.get()%>" />
                                 </td>
                                 <td>
                                     <input class="field" type="text" name="bank_name" placeholder="Bank name"
-                                           pattern="^[가-힣a-zA-Z0-9 ]+$"
+                                           pattern="^[가-힣a-zA-Z0-9]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
                                            id="bank_name" maxlength="20"
@@ -1025,9 +1023,10 @@ case ACTION_DELETE:
                                 </td>
                                 <td>
                                     <input class="field" type="text" name="account_num" placeholder="Account number"
-                                           pattern="^[가-힣a-zA-Z0-9 ]+$"
-                                           oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
+                                           pattern="^[0-9- ]+$"
+                                           oninvalid="setCustomValidity('Only allow number or typon(-)')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
+                                           onfocusout="AddNewAccountInputRow();"
                                            id="account_num" maxlength="20" 
                                            value="<%=acc.ACCOUNT_NUM.get()%>" />
                                 </td>
@@ -1036,9 +1035,6 @@ case ACTION_DELETE:
                             }
                             %>
                         </table>
-                    </td>
-                </tr>
-                </table>
                 </fieldset>
             </div>
         </form>

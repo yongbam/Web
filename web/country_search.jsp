@@ -4,7 +4,7 @@
     Author     : yongbam
 --%>
 
-<%@page import="ybk.db.Country"%>
+<%@page import="data.custom.Country"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -23,7 +23,7 @@
         <script Language="JavaScript"> 
             function Zip_search() { 
                 if (document.Zip.address.value.length == 0) { 
-                    alert("찾으시는 동이름을 입력하시오."); 
+                    alert("찾으려는 국가 명을 입력하시오."); 
                     document.Zip.address.focus(); 
                     return false; 
                 } 
@@ -50,7 +50,7 @@
                     } 
                 } 
                 if( i==dck.zip_chk.length ) { 
-                    alert("해당 주소를 선택하십시요."); 
+                    alert("해당 국가 명을 선택하세요."); 
                 } 
                 else {
                     window.opener.document.getcontent_form.country_code.value=country_eng;
@@ -63,14 +63,14 @@
     </head>
     <body  onload="document.Zip.address.focus()">
         <center>
-        <font color=Green size=3>Search Country Name - Step</font> 
+        <font color=Green size=3>국가 코드 검색</font> 
         <hr size=0 width=95%> 
-        <font>Input Country name.<br> 예) '대한민국' , '일본' , '미국'</font> 
+        <font>해당 국가 명을 입력하세요.<br> 예) '대한민국' , '일본' , '미국'</font> 
         <p> 
         <form method="POST" name="Zip" onSubmit="return Zip_search();"> 
             <hr size=0 width=95%> 
             <input type="text" name="address" size="20" maxlength="20" value="" style='border:solid 1;'> 
-            <button onclick="Zip_search()">OK</button>
+            <button onclick="Zip_search()">국가 검색</button>
             <hr size=0 width=95%> 
         </form> 
         <table border=0 width=90%><tr><td> 
@@ -123,7 +123,7 @@
             if(!isExist)
             {
                 %>
-                Couldn't find country
+                해당 국가를 찾지 못하였습니다.
                 <%
             }
             else
@@ -146,7 +146,7 @@
                 %>
                         <hr size=0>
                         <center>
-                            <button onclick="confirm(document.check);">OK</button>
+                            <button onclick="confirm(document.check);">국가 명 및 국가 코드 입력</button>
                         </center>
                     </form>
                 <%

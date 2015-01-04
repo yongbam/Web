@@ -4,9 +4,9 @@
     Author     : yongbam
 --%>
 
+<%@page import="data.custom.Address"%>
 <%@page import="com.eaio.stringsearch.StringSearch"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="ybk.db.Address"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -63,14 +63,14 @@
     </head>
     <body  onload="document.Zip.address.focus()">
         <center>
-        <font color=Green size=3>우편번호검색 - Step 2/2</font> 
+        <font color=Green size=3>우편번호검색 - 입력 후 선택 그리고 확인 버튼 클릭하세요</font> 
         <hr size=0 width=95%> 
         <font>찾으시는 동/읍/면/리 이름을 입력하세요.<br> 예) '행신동' , '목동' , '상계동'</font> 
         <p> 
         <form method="POST" name="Zip" onSubmit="return Zip_search();"> 
             <hr size=0 width=95%> 
             <input type="text" name="address" size="20" maxlength="20" value="" style='border:solid 1;'>
-            <button OnClick="Zip_search();">Enter</button> 
+            <button OnClick="Zip_search();">주소 찾기</button> 
             <hr size=0 width=95%> 
         </form> 
         <table border=0 width=90%><tr><td> 
@@ -127,7 +127,7 @@
             if(!isExist)
             {
                 %>
-                Couldn't find address
+                해당 주소를 찾지 못하였습니다.
                 <%
             }
             else
@@ -150,7 +150,7 @@
                 %>
                         <hr size=0>
                         <center>
-                            <button onclick="confirm(document.check);">OK</button>
+                            <button onclick="confirm(document.check);">주소 입력 확인</button>
                         </center>
                     </form>
                 <%
