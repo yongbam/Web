@@ -1008,14 +1008,14 @@ case ACTION_DELETE:
                                 <td>
                                     <input class="field" type="text" name="office_name" placeholder="Office Name"  
                                            id="office_name" maxlength="20"
-                                           pattern="^[가-힣a-zA-Z0-9]+$"
+                                           pattern="^[가-힣a-zA-Z0-9 ]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
                                            value="<%=acc.FACTORY.get()%>" />
                                 </td>
                                 <td>
                                     <input class="field" type="text" name="bank_name" placeholder="Bank name"
-                                           pattern="^[가-힣a-zA-Z0-9]+$"
+                                           pattern="^[가-힣a-zA-Z0-9 ]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
                                            id="bank_name" maxlength="20"
