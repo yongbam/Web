@@ -97,3 +97,28 @@ function submitCustomName(elm) {
     
     form.submit();
 }
+
+function initialize()
+{
+    var input_boxes = document.getElementsByClassName("field");
+    var boxes=document.getElementsByClassName("field");
+        [].forEach.call(boxes, function(elem, index, arr){
+            console.log("Index "+index.toString()+" Value : "+elem.value);
+            elem.value="";
+        });
+}
+
+function printDocument()
+{
+    var before = document.body.innerHTML;
+//    alert(body);
+    var printArea = document.getElementById("business_number_div").innerHTML;
+    printArea = printArea.concat(document.getElementById("important_info_div").innerHTML);
+    printArea = printArea.concat(document.getElementById("Other_info_div").innerHTML);
+    printArea = printArea.concat(document.getElementById("account_detail_div").innerHTML);
+//    alert(printArea);
+    document.body.innerHTML = printArea;
+    window.print();
+    Document.body.innerHTML = before;
+    
+}

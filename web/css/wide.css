@@ -28,32 +28,37 @@ div
     top: -10px;
     width: 290px;
 }
+#multi_lang_div
+{
+    left: 650px;
+    top: -245px;
+}
+#button_div
+{
+    left: 850px;
+    top: -270px;
+}
 #business_number_div
 {
     left: 300px;
-    top: -245px;
+    top: -267px;
     width: 350px;
 }
 #important_info_div
 {
     left: 300px;
-    top: -245px;
+    top: -267px;
     width: 350px;
-}
-#button_div
-{
-    left: 1000px;
-    top: -245px;
 }
 #Other_info_div
 {
     left: 650px;
-    top: -590px;
+    top: -613px;
     width: 550px;
 }
 #account_detail_div
 {
     left: 650px;
-    top: -590px;
+    top: -613px;
     width: 550px;
 }

@@ -8,21 +8,24 @@
                     2014. 12. 31 PM 06:04:00    Solved most things except query when dblclick result
                     2014. 12. 31 PM 10:04:00    Solved dblclick result, to do fix about fixed table
                     2015. 01. 01 PM 01:04:00    Add to git hub
-                    2015. 01. 03 AM 11:09:00    Start modify some user interface
+                    2015. 01. 03 AM 11:09:00    Start modify some user interface, some java move to other library
+                    2015. 01. 03 PM 03:09:00    Add multi language base
 
     Author      :   yong il Kim
 --%>
 
-<%@page import="ybk.db.Custom.Account_"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@page import="data.custom.CustomKey"%>
+<%@page import="data.custom.Custom"%>
+<%@page import="data.custom.Custom.Account_"%>
 <%@page import="ybk.util.Compare"%>
 <%@page import="ybk.util.NNString"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@page import = "ybk.db.*" %>
 <%@page import = "java.sql.*" %>
-<%@ page import="java.util.Date"%>
+<%@page import ="java.util.Date"%>
 
 <%
     // New start
@@ -261,7 +264,7 @@
                 // Show custom contents
                 System.out.print("QUERY\n");
                 // Query by search key then click query button
-                if(num.length()>0)
+                if(num.length()>0 && !getcontent_bt.equals("HELLO"))
                 {
                     System.out.println("query by click submit button");
                     
@@ -428,8 +431,10 @@
         <link rel="stylesheet" type="test/css" href="css/manage.css" ></link>        
         <!-- Set div postion css by screen size -->
         <link rel="stylesheet" type="text/css" media="screen and (max-width: 650px)" href="css/narrow.css" ></link>
-	<link rel="stylesheet" type="text/css" media="screen and (min-width: 651px) and (max-width: 1050px)" href="css/medium.css" ></link>
-	<link rel="stylesheet" type="text/css" media="screen and (min-width: 1051px)" href="css/wide.css" ></link>
+        <link rel="stylesheet" type="text/css" media="screen and (min-width: 651px) and (max-width: 1050px)" href="css/medium.css" ></link>
+        <link rel="stylesheet" type="text/css" media="screen and (min-width: 1051px)" href="css/wide.css" ></link>
+        <!-- Support multi language -->
+        <script type="text/javascript" src="js/languages.js"></script>
         <%
                     switch(button_type)
                     {
@@ -488,9 +493,9 @@ case ACTION_DELETE:
         <!-- Result of search -->
         <div id="result_div">
             <form name="resultquery_form" id="resultquery_form" action="index.jsp" method="POSt">
-            <fieldset>
-                <legend>Result</legend>
-                <table id="result_table">
+                <fieldset>
+                    <legend>Result</legend>
+                    <table id="result_table">
                     <tr>
                         <td>
                             사업자 번호
@@ -500,10 +505,10 @@ case ACTION_DELETE:
                         </td>
                         <td>거래처명</td>
                     </tr>
-<%
-        for(CustomKey cus_val : customKeyList )
-        {
-%>
+            <%
+            for(CustomKey cus_val : customKeyList )
+            {
+            %>
                     <tr>
                         <td>
                             <!-- No meaning about limit maxlength -->
@@ -520,13 +525,19 @@ case ACTION_DELETE:
                                    onclick='submitCustomName(this);' />
                         </td>
                     </tr>
-<%
-        
-        }
-%>
+            <%
+
+            }
+            %>
                 </table>
-            </fieldset>
+                </fieldset>
             </form>
+        </div>
+        <!-- Multi language buttons -->        
+        <div id="multi_lang_div">
+            <button class="lang_button" data-lang="ko">한국어</button>
+            <button class="lang_button" data-lang="en">English</button>
+            <button class="lang_button" data-lang="ja">日本語</button>
         </div>
         <!-- Contents of business client -->
         <form name="getcontent_form" id="getcontent_form" action="index.jsp" method="POST">
@@ -535,17 +546,30 @@ case ACTION_DELETE:
                 <table id="button_table">
                         <tr>
                             <td>
-                                <input class=field" type="submit" name="getcontent_bt" value="조회" />
+                                <input class="field" type="submit" id="lang_button" name="getcontent_bt" data-langNum="query_bt" value="Query" />
                             </td>
                             <td>
-                                <input class=field" type="submit" name="save_bt" value="저장" onclick="layer_open('layer2');"/>
+                                <input class="field" type="submit" id="lang_button" name="init_bt" data-langNum="init_bt" value="Init" 
+                                       onclick="Initialize();"/>
                             </td>
                             <td>
-                                <input class=field" type="submit" name="delete_bt" value="삭제" onclick="layer_open('layer2');"/>
+                                <input class="field" type="submit" id="lang_button" name="save_bt" data-langNum="save_bt" value="Save" 
+                                       onclick="layer_open('layer2');"/>
                             </td>
                             <td>
-                                <button onclick="
-                                    layer_open('layer2');open(location, '_self').close();">닫기</button>
+                                <input class="field" type="submit" id="lang_button" name="delete_bt" data-langNum="delete_bt" value="Delete" 
+                                       onclick="layer_open('layer2');"/>
+                            </td>
+                            <td>
+                                <input class="field" type="submit" id="lang_button" name="print_bt" data-langNum="print_bt" value="Print" 
+                                       onclick="printDocument();"/>
+                            </td>
+                            <td>
+                                <input class="field" type="submit" id="lang_button" name="setup_bt" data-langNum="setup_bt" value="Setup" />
+                            </td>
+                            <td>
+                                <input class="field" type="submit" id="lang_button" name="close_bt" data-langNum="close_bt" value="Close"
+                                       onclick="layer_open('layer2');open(location, '_self').close();"/>
                             </td>
                         </tr>
                     </table>
@@ -1017,7 +1041,7 @@ case ACTION_DELETE:
                 </table>
                 </fieldset>
             </div>
-        </form> 
+        </form>
         <!-- Fixed layout popup div -->
         <div class="layer">
             <div class="bg"></div>
