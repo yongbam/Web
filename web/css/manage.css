@@ -39,10 +39,11 @@ a.cbtn:hover {border: 1px solid #091940; background-color:#1f326a; color:#fff;}
 /* For input text and date to fix table cell */
 input[type="text"], input[type="date"], input[type="datetime-local"]
 {
-    width: 100%; 
+    width: 100% !important;
     box-sizing: border-box;
     -webkit-box-sizing:border-box;
     -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
 }
 td
 {
@@ -55,4 +56,10 @@ table td
 .full_length_field
 {
     width: 50%;
+}
+
+/* For IE date picker */
+input.date {
+    width: 150px;
+    color: #000;
 }

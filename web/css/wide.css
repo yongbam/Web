@@ -7,58 +7,147 @@ and open the template in the editor.
     Created on : 2015. 1. 1, 오후 11:35:22
     Author     : yongbam
 */
-#sub_td
-{
-    width: 30px;
+/* Used CSS hack cuz yet could not know how to divived by web browser type */
+/* For Chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+    #sub_td
+    {
+        width: 30px;
+    }
+    div
+    {
+        position: relative;
+        white-space: nowrap;
+    }
+    #search_div
+    {
+        left: 0.6em;
+        top: -0.7em;
+        width: 18.125em;
+    }
+    #result_div
+    {
+        left: 0.6em;
+        top: -0.7em;
+        width: 18.125em;
+    }
+    #multi_lang_div
+    {
+        left: 40.625em;
+        top: -17em;
+    }
+    #button_div
+    {
+        left: 53.125em;
+        top: -18.563em;
+    }
+    #business_number_div
+    {
+        left: 18.750em;
+        top: -18.375em;
+        width: 21.785em;
+    }
+    #important_info_div
+    {
+        left: 18.750em;
+        top: -18.375em;
+        width: 21.875em;
+    }
+    #Other_info_div
+    {
+        left: 40.625em;
+        top: -40.000em;
+        width: 34.375em;
+    }
+    #account_detail_div
+    {
+        left: 40.625em;
+        top: -40.000em;
+        width: 34.375em;
+    }
 }
-div
-{
-    position: relative;
-    white-space: nowrap;
+/* For IE 10 or over */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    #search_table
+    {
+        width: 10em;
+    }
+    #result_table
+    {
+        width: 10em;
+    }
+    .field_search, .field_result
+    {
+        width: 9.500em;
+    }
+    .field_short_content
+    {
+        width: 4em;
+    }
+    #sub_td
+    {
+        width: 30px;
+    }
+    div
+    {
+        position: relative;
+        white-space: nowrap;
+    }
+    #search_div
+    {
+        left: 0.6em;
+        top: -0.7em;
+        width: 18.125em;
+    }
+    #result_div
+    {
+        left: 0.6em;
+        top: -0.7em;
+        width: 18.125em;
+    }
+    #multi_lang_div
+    {
+        left: 35.625em;
+        top: -16em;
+    }
+    #button_div
+    {
+        left: 48.125em;
+        top: -17.750em;
+    }
+    #business_number_div
+    {
+        left: 18.750em;
+        top: -17.175em;
+        width: 21.785em;
+    }
+    #important_info_div
+    {
+        left: 18.750em;
+        top: -17.175em;
+        width: 21.785em;
+    }
+    #Other_info_div
+    {
+        left: 40.625em;
+        top: -36.800em;
+        width: 34.375em;
+    }
+    #account_detail_div
+    {
+        left: 40.625em;
+        top: -36.800em;
+        width: 34.375em;
+    }
 }
-#search_div
-{
-    left: 10px;
-    top: -10px;
-    width: 290px;
+/* For Firefox */
+@-moz-document url-prefix() {
 }
-#result_div
+/* For Safari */
+html[xmlns*=""] body:last-child
 {
-    left: 10px;
-    top: -10px;
-    width: 290px;
 }
-#multi_lang_div
+/* For Opera */
+body:first-of-type
 {
-    left: 650px;
-    top: -272px;
-}
-#button_div
-{
-    left: 850px;
-    top: -297px;
-}
-#business_number_div
-{
-    left: 300px;
-    top: -294px;
-    width: 350px;
-}
-#important_info_div
-{
-    left: 300px;
-    top: -294px;
-    width: 350px;
-}
-#Other_info_div
-{
-    left: 650px;
-    top: -640px;
-    width: 550px;
-}
-#account_detail_div
-{
-    left: 650px;
-    top: -640px;
-    width: 550px;
 }

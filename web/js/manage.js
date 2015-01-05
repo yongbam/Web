@@ -3,19 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-// Check inputbox test maxlength
-$(document).ready(function(){
-    $('#input_text').keyup(function(){
-        if ($(this).val().length > $(this).attr('maxlength')) {
-            alert('제한길이 초과');
-            $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
-        }
-    });
-});        
-
 // If enter on account_num then add next row
-function AddNewAccountInputRow()
-{
+function AddNewAccountInputRow(){
     var table = document.getElementById("account_table");
     var row_count = $('#account_table tr').length;
     var row = table.insertRow(row_count);
@@ -24,9 +13,9 @@ function AddNewAccountInputRow()
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
 
-    cell1.innerHTML="<input class=\"field\" type=\"text\" name=\"office_name\" placeholder=\"Office Name\" id=\"office_name\" value=\"\" />";
-    cell2.innerHTML="<input class=\"field\" type=\"text\" name=\"bank_name\" placeholder=\"Bank name\" id=\"bank_name\" value=\"\" />";
-    cell3.innerHTML="<input class=\"field\" type=\"text\" name=\"account_num\" placeholder=\"Account number\" id=\"account_num\" value=\"\" onfocusout='AddNewAccountInputRow()' />";
+    cell1.innerHTML="<input class=\"field_account\" type=\"text\" name=\"office_name\" placeholder=\"Office Name\" id=\"office_name\" value=\"\" />";
+    cell2.innerHTML="<input class=\"field_account\" type=\"text\" name=\"bank_name\" placeholder=\"Bank name\" id=\"bank_name\" value=\"\" />";
+    cell3.innerHTML="<input class=\"field_account\" type=\"text\" name=\"account_num\" placeholder=\"Account number\" id=\"account_num\" value=\"\" onfocusout='AddNewAccountInputRow()' />";
 }
 
 // Fiexed layout by Jquery for save, delete
@@ -101,8 +90,7 @@ function submitCustomName(elm) {
 }
 
 // Clear all contents of custom, not save or delete on database
-function initialize()
-{
+function initialize(){
     var input_boxes = document.getElementsByClassName("field");
     var boxes=document.getElementsByClassName("field");
         [].forEach.call(boxes, function(elem, index, arr){
@@ -112,8 +100,7 @@ function initialize()
 }
 
 // Reorder html and show print window
-function printDocument()
-{
+function printDocument(){
     var before = document.body.innerHTML;
 //    alert(body);
     var printArea = document.getElementById("business_number_div").innerHTML;
@@ -135,3 +122,14 @@ function submitAfterConfirm(){
     if(bAct)
         form.submit();
 }
+
+// JQuery need ready cuz couldn't know elements until load sequence
+$(document).ready(function(){
+    // Check inputbox test maxlength
+    $('#input_text').keyup(function(){
+        if ($(this).val().length > $(this).attr('maxlength')) {
+            alert('제한길이 초과');
+            $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+        }
+    });
+    });

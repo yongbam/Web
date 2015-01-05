@@ -32,6 +32,19 @@
     // New start
     System.out.print("=================================================\n");
     
+    // Check is it IE or not - because IE little support about HTML5 yet
+    boolean bIsIE = false;
+    String userAgent = request.getHeader("user-agent");
+    if (userAgent.indexOf("AppleWebKit") > -1 || userAgent.indexOf("AppleWebKit") > -1 || userAgent.indexOf("AppleWebKit") > -1) 
+    {
+        System.out.println("Your browser is not Microsoft Internet Explorer<br/>");
+    }
+    else
+    {
+        System.out.println("Your browser is Microsoft Internet Explorer<br/>");
+        bIsIE = true;
+    }
+    
     // CONST DEFINE
     final int ACTION_NOTHING=0;
     final int ACTION_SEARCH_KEY=1;
@@ -447,9 +460,13 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>        
         <!-- JQuery -->
-        <script type="text/javascript" src="js/jquery-1.3.2.min.js" ></script>        
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <!-- JQuery date picker -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
         <!-- Get javascript what used here -->
-        <script type="text/javascript" src="js/manage.js" ></script>        
+        <script type="text/javascript" src="js/manage.js" ></script>
         <!-- Get common css -->
         <link rel="stylesheet" type="test/css" href="css/manage.css" ></link>        
         <!-- Set div postion css by screen size -->
@@ -458,9 +475,35 @@
         <link rel="stylesheet" type="text/css" media="screen and (min-width: 1051px)" href="css/wide.css" ></link>
         <!-- Support multi language -->
         <script type="text/javascript" src="js/languages.js"></script>
+        <!-- Cross browsing -->
+        <script type="text/javascript" src="js/cross_browsing.js" ></script>
+        <!-- JQuery date picker for IE, if move to ethernal then not act -->
+        <%
+        if(bIsIE)
+        {
+            %>
+        <script>
+            $(function() {
+                $( '#contract_start' ).datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
+                $( '#contract_end' ).datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
+            });
+        </script>
+        <%
+        }
+        %>
+                
     </head>
     <!-- body -->
     <body>
+        <!-- What is this broswer
+        <script>
+        document.write( getBrowserType() );
+        </script>
+        -->
         <%
         switch(nActionResult)
         {
@@ -495,11 +538,11 @@
             <form name="search_form" id="search_form" action="index.jsp" method="POST">
             <fieldset>
                 <legend>Search content</legend>
-                <table>
+                <table id="search_table">
                     <tr>
                         <td width="90px" data-langNum="busi_num">사업자 번호</td>
                         <td colspan="2">
-                            <input class="field" type="text" name="b_number" placeholder="business number"
+                            <input class="field_search" type="text" name="b_number" placeholder="business number"
                                    pattern="\d{4}-\d{3}-\d{4}"
                                    oninvalid="setCustomValidity('Enter invalidate number like 1111-111-1111')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -509,7 +552,7 @@
                     <tr>
                         <td>거래처명</td>
                         <td>
-                            <input class="field" type="text" name="c_name" placeholder="company name"
+                            <input class="field_search" type="text" name="c_name" placeholder="company name"
                                    pattern='^[가-힣a-zA-Z ]+$'
                                    oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -545,14 +588,14 @@
                     <tr>
                         <td>
                             <!-- No meaning about limit maxlength -->
-                            <input class="field" type="text" name="searchResutKey" 
+                            <input class="field_result" type="text" name="searchResutKey" 
                                    value="<%=cus_val.get_busi_num()%>"
                                    readonly
                                    onclick='submitBusinessNumber(this);' />
                         </td>
                         <td>
                             <!-- No meaning about limit maxlength -->
-                            <input class="field" type="text" name="searchResultCustom" 
+                            <input class="field_result" type="text" name="searchResultCustom" 
                                    value="<%=cus_val.get_custom()%>"
                                    readonly
                                    onclick='submitCustomName(this);' />
@@ -579,29 +622,29 @@
                 <table id="button_table">
                         <tr>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="getcontent_bt" data-langNum="query_bt" value="Query" />
+                                <input class="field_button" type="submit" id="lang_button" name="getcontent_bt" data-langNum="query_bt" value="Query" />
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="init_bt" data-langNum="init_bt" value="Init" 
+                                <input class="field_button" type="submit" id="lang_button" name="init_bt" data-langNum="init_bt" value="Init" 
                                        onclick="submitAfterConfirm();Initialize();"/>
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="save_bt" data-langNum="save_bt" value="Save" 
+                                <input class="field_button" type="submit" id="lang_button" name="save_bt" data-langNum="save_bt" value="Save" 
                                        onclick="submitAfterConfirm();layer_open('layer2');"/>
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="delete_bt" data-langNum="delete_bt" value="Delete" 
+                                <input class="field_button" type="submit" id="lang_button" name="delete_bt" data-langNum="delete_bt" value="Delete" 
                                        onclick="submitAfterConfirm();layer_open('layer2');"/>
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="print_bt" data-langNum="print_bt" value="Print" 
+                                <input class="field_button" type="submit" id="lang_button" name="print_bt" data-langNum="print_bt" value="Print" 
                                        onclick="printDocument();"/>
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="setup_bt" data-langNum="setup_bt" value="Setup" />
+                                <input class="field_button" type="submit" id="lang_button" name="setup_bt" data-langNum="setup_bt" value="Setup" />
                             </td>
                             <td>
-                                <input class="field" type="submit" id="lang_button" name="close_bt" data-langNum="close_bt" value="Close"
+                                <input class="field_button" type="submit" id="lang_button" name="close_bt" data-langNum="close_bt" value="Close"
                                        onclick="layer_open('layer2');open(location, '_self').close();"/>
                             </td>
                         </tr>
@@ -615,7 +658,7 @@
                         <tr>
                             <td id="sub_td">사업자 번호</td>
                             <td colspan="4">
-                                <input class="field" type="text" name="bc_number" placeholder="business client number"
+                                <input class="field_business" type="text" name="bc_number" placeholder="business client number"
                                        pattern="\d{4}-\d{3}-\d{4}"
                                        oninvalid="setCustomValidity('Enter invalidate number like 1111-111-1111')"
                                        onchange="try{setCustomValidity('');}catch(e){}"
@@ -634,7 +677,7 @@
                     <tr>
                         <td id="sub_td">거래처명</td>
                         <td colspan="2">
-                            <input class="full_length_field" type="text" name="bc_name" placeholder="business client name"
+                            <input class="field_content" type="text" name="bc_name" placeholder="business client name"
                                    pattern='^[가-힣a-zA-Z ]+$'
                                    oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -642,7 +685,7 @@
                         </td>
                         <td id="sub_td">약칭</td>
                         <td>
-                            <input class="field" type="text" name="bcs_name" placeholder="business client short name"
+                            <input class="field_short_content" type="text" name="bcs_name" placeholder="business client short name"
                                    pattern='^[가-힣a-zA-Z ]+$'
                                    oninvalid="setCustomValidity('Only allow 한국어 or English alphbet')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -653,7 +696,7 @@
                     <tr>
                         <td id="sub_td">대표자</td>
                         <td colspan="4">
-                            <input class="field" type="text" name="ceo_name" placeholder="CEO name" 
+                            <input class="field_content" type="text" name="ceo_name" placeholder="CEO name" 
                                    name="ceo_name" id="ceo_name" maxlength="10"
                                    value="<%=custom_val.Content.CEO.get()%>" />
                         </td>
@@ -662,7 +705,7 @@
                     <tr>
                         <td id="sub_td">담당자</td>
                         <td colspan="4">
-                            <input class="field" type="text" name="supervisor_name" placeholder="supervisor name"
+                            <input class="field_content" type="text" name="supervisor_name" placeholder="supervisor name"
                                    id="supervisor_name" name="supervisor_name" maxlength="10"
                                    value="<%=custom_val.Content.CHARGE_PERSON.get()%>" />
                         </td>
@@ -672,7 +715,7 @@
                         <td id="sub_td">업태</td>
                         <td colspan="3">
                             <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="bc_type" placeholder="click button" readonly
+                            <input class="field_content" type="text" name="bc_type" placeholder="click button" readonly
                                    readonly id="bc_type" tabindex="-1"
                                    value="<%=custom_val.Content.BUSI_CONDITION.get()%>" />
                         </td>
@@ -689,7 +732,7 @@
                         <td id="sub_td">종목</td>
                         <td colspan="4">
                             <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="bc_item" placeholder="click button" readonly
+                            <input class="field_content" type="text" name="bc_item" placeholder="click button" readonly
                                    readonly id="bc_item" tabindex="-1"
                                    value="<%=custom_val.Content.ITEM.get()%>" />
                         </td>
@@ -699,7 +742,7 @@
                         <td id="sub_td">우편번호</td>
                         <td colspan="3" width="120px">
                             <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="post_number" placeholder="Click search button" 
+                            <input class="field_content" type="text" name="post_number" placeholder="Click search button" 
                                    readonly id="post_number" tabindex="-1"
                                    value="<%=custom_val.Content.POST_NUM.get()%>" />
                         </td>
@@ -715,7 +758,7 @@
                         <td id="sub_td">주소1</td>
                         <td colspan="4">
                             <!-- No meaning about limited maxlength cuz get from another popup window -->
-                            <input class="field" type="text" name="address" placeholder="Click search button"
+                            <input class="field_content" type="text" name="address" placeholder="Click search button"
                                    readonly id="address" tabindex="-1"
                                    value="<%=custom_val.Content.ADDR1.get()%>" />
                         </td>
@@ -724,7 +767,7 @@
                     <tr>
                         <td id="sub_td">주소2</td>
                         <td colspan="7">
-                            <input class="full_length_field" type="text" name="address_left" placeholder="Input last address"
+                            <input class="field_content" type="text" name="address_left" placeholder="Input last address"
                                id="address_left" maxlength="80"
                                pattern="^[가-힣a-zA-Z0-9 ]+$"
                                oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
@@ -762,7 +805,7 @@
                     <tr>
                         <td id="sub_td">홈페이지</td>
                         <td colspan="4">
-                            <input class="full_length_field" type="text" name="homepage" placeholder="client homepage"
+                            <input class="field_content" type="text" name="homepage" placeholder="client homepage"
                                    pattern="^((http(s?))://)([0-9a-zA-Z]+.)+[a-zA-Z]{2,6}(:[0-9]+)?(S*)"
                                    oninvalid="setCustomValidity('Only allow like http(s)://www.Korea.org')"
                                    onchange="try{setCustomValidity('');}catch(e){}"
@@ -782,7 +825,7 @@
                         <tr>
                             <td id="sub_td">전화번호</td>
                             <td colspan="4">
-                                <input class="field" type="text" name="tel_num" placeholder="call number"
+                                <input class="field_content" type="text" name="tel_num" placeholder="call number"
                                        patern="^[0]\d{1,2}-\d{3,4}-\d{4}"
                                        oninvalid="setCustomValidity('Only allow like 02(010)-1234(123)-5678')"
                                        onchange="try{setCustomValidity('');}catch(e){}"
@@ -794,7 +837,7 @@
                         <tr>
                             <td>팩스번호</td>
                             <td colspan="4">
-                                <input class="field" type="text" name="fax_num" placeholder="fax number"
+                                <input class="field_content" type="text" name="fax_num" placeholder="fax number"
                                        pattern="^[0]\d{1,2}-\d{3,4}-\d{4}"
                                        oninvalid="setCustomValidity('Only allow like 02-1234-5678')"
                                        onchange="try{setCustomValidity('');}catch(e){}"
@@ -882,13 +925,13 @@
                             <td id="sub_td">국가</td>
                             <td>
                                 <!-- No meaning about limited maxlength cuz get from another popup window -->
-                                <input class="field" type="text" name="country_name" placeholder="Click Button"
+                                <input class="field_content" type="text" name="country_name" placeholder="Click Button"
                                        readonly id="country_name" tabindex="-1"
                                        value="<%=custom_val.Content.COUNTRY_KOR.get()%>" />
                             </td>
                             <td>
                                 <!-- No meaning about limited maxlength cuz get from another popup window -->
-                                <input class="field" type="text" name="country_code" placeholder=""
+                                <input class="field_short_content" type="text" name="country_code" placeholder=""
                                        readonly id="country_code" tabindex="-1"
                                        value="<%=custom_val.Content.COUNTRY_ENG.get()%>" />
                             </td>
@@ -975,20 +1018,47 @@
                         <tr>
                             <td id="sub_td">계약기간</td>
                             <td colspan="1">
-                                <input class="field" type="date" name="contract_start"  
-                                   id="contract_start" value="<%=custom_val.Content.CONTRACT_PERIOD_S%>" size="23" />
+                                <%
+                                       if(bIsIE)
+                                       {
+                                       %>
+                                       <input class='field_content' type="text" name="contract_start" id="contract_start" value="" readonly />
+                                <%
+                                       }
+                                       else
+                                       {
+                                           %>
+                                <input class="field_content" type="date" name="contract_start"  
+                                       id="contract_start" value="<%=custom_val.Content.CONTRACT_PERIOD_S%>"/>
+                                <%
+                                       }
+                                       %>
                             </td>
-                            <td>~</td>
+                            <td style="
+                                alignment-adjust: central">To</td>
                             <td colspan="1">
-                                <input class="field" type="date" name="contract_end"  
-                                   id="contract_end" value="<%=custom_val.Content.CONTRACT_PERIOD_E%>" size="23" />
+                                <%
+                                       if(bIsIE)
+                                       {
+                                       %>
+                                       <input class='field_content' type="text" name="contract_end" id="contract_end" value="" readonly />
+                                <%
+                                       }
+                                       else
+                                       {
+                                           %>
+                                <input class="field_content" type="date" name="contract_end"  
+                                   id="contract_end" value="<%=custom_val.Content.CONTRACT_PERIOD_E%>"/>
+                                <%
+                                       }
+                                       %>
                             </td>
                         </tr>
                         <!-- Register Info -->
                         <tr>
                             <td>등록정보</div></td>
                             <td colspan="1">
-                                <input class="field" type="text" name="registered_name" placeholder="Write name who registerd"  
+                                <input class="field_content" type="text" name="registered_name" placeholder="Write name who registerd"  
                                    id="registered_name" maxlength="10"
                                    pattern="^[가-힣a-zA-Z0-9 ]+$"
                                    oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
@@ -996,7 +1066,7 @@
                                    value="<%=custom_val.Content.REGI_INFO_MAN.get()%>" />
                             </td>
                             <td colspan="2" style="width: 30px;">
-                                <input class="field" type="datetime-local" name="registered_date" 
+                                <input class="field_content" type="datetime-local" name="registered_date" 
                                        readonly id="registered_date" tabindex="-1"
                                        value="<%=custom_val.Content.REGI_INFO_DATE%>" />
                             </td>
@@ -1005,7 +1075,7 @@
                         <tr>
                             <td id="sub_td">변경정보</td>
                             <td>
-                                <input class="field" type="text" name="modified_name" placeholder="Write name who modified"  
+                                <input class="field_content" type="text" name="modified_name" placeholder="Write name who modified"  
                                        id="modified_name" maxlength="10"
                                        pattern="^[가-힣a-zA-Z0-9 ]+$"
                                        oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
@@ -1013,7 +1083,7 @@
                                        value="<%=custom_val.Content.MODI_INFO_MAN.get()%>" />
                             </td>
                             <td colspan="2">
-                                <input class="field" type="datetime-local" name="modified_date"
+                                <input class="field_content" type="datetime-local" name="modified_date"
                                        readonly tabindex="-1" id="modified_date" 
                                        value="<%=custom_val.Content.MODI_INFO_DATE%>" />
                             </td>
@@ -1039,7 +1109,7 @@
                             %>
                             <tr>
                                 <td>
-                                    <input class="field" type="text" name="office_name" placeholder="Office Name"  
+                                    <input class="field_account" type="text" name="office_name" placeholder="Office Name"  
                                            id="office_name" maxlength="20"
                                            pattern="^[가-힣a-zA-Z0-9 ]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
@@ -1047,7 +1117,7 @@
                                            value="<%=acc.FACTORY.get()%>" />
                                 </td>
                                 <td>
-                                    <input class="field" type="text" name="bank_name" placeholder="Bank name"
+                                    <input class="field_account" type="text" name="bank_name" placeholder="Bank name"
                                            pattern="^[가-힣a-zA-Z0-9 ]+$"
                                            oninvalid="setCustomValidity('Only allow 한국어 or number or English alphbet')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
@@ -1055,7 +1125,7 @@
                                            value="<%=acc.TRADE_BANK.get()%>" />
                                 </td>
                                 <td>
-                                    <input class="field" type="text" name="account_num" placeholder="Account number"
+                                    <input class="field_account" type="text" name="account_num" placeholder="Account number"
                                            pattern="^[0-9- ]+$"
                                            oninvalid="setCustomValidity('Only allow number or typon(-)')"
                                            onchange="try{setCustomValidity('');}catch(e){}"
@@ -1094,5 +1164,10 @@
     catch(Exception e)
     {
         e.printStackTrace();
+    }
+    finally
+    {
+        if(db != null )
+            db.Close();
     }
 %>
