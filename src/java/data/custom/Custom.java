@@ -116,7 +116,6 @@ public class Custom {
         
     };
     public Key_ Key;
-    
     // Conetent
     public class Content_
     {
@@ -132,8 +131,10 @@ public class Custom {
             TRADE_STOP=false;
             CONTRACT_PERIOD_S=new Date(jDate.getTime() );
             CONTRACT_PERIOD_E=new Date(jDate.getTime() );
-            REGI_INFO_DATE=new Date(jDate.getTime() );
-            MODI_INFO_DATE=new Date(jDate.getTime() );
+//            REGI_INFO_DATE=new Date(jDate.getTime() );
+//            MODI_INFO_DATE=new Date(jDate.getTime() );
+//            REGI_INFO_DATE=new String();
+//            MODI_INFO_DATE=new String();
             
             SHORT=new NNString();
             CEO=new NNString();
@@ -174,12 +175,13 @@ public class Custom {
         public Boolean TRADE_STOP;
         public Date CONTRACT_PERIOD_S;
         public Date CONTRACT_PERIOD_E;
-        public Date REGI_INFO_DATE;
-        public Date MODI_INFO_DATE;
+//        public Date REGI_INFO_DATE;
+        public String REGI_INFO_DATE;
+//        public Date MODI_INFO_DATE;
+        public String MODI_INFO_DATE;
         
     };
     public Content_ Content;
-    
     // Account of custom
     public class Account_
     {
@@ -189,7 +191,6 @@ public class Custom {
         
     };
     public ArrayList<Account_> AccountList;
-    
     // function
     public void SetCustom(ResultSet rs)
     {
@@ -219,10 +220,23 @@ public class Custom {
             Content.CONTRACT_PERIOD_S=rs.getDate("CONTRACT_PERIOD_S");
             Content.CONTRACT_PERIOD_E=rs.getDate("CONTRACT_PERIOD_E");
             Content.REGI_INFO_MAN.set(rs.getString("REGI_INFO_MAN"));
-            Content.REGI_INFO_DATE=rs.getDate("REGI_INFO_DATE");
+//            Content.REGI_INFO_DATE=rs.getDate("REGI_INFO_DATE").toString();
+            Content.REGI_INFO_DATE =rs.getTimestamp("REGI_INFO_DATE").toString().replace(' ', 'T');
             Content.MODI_INFO_MAN.set(rs.getString("MODI_INFO_MAN"));
-            Content.MODI_INFO_DATE=rs.getDate("MODI_INFO_DATE");
-            
+//            Content.MODI_INFO_DATE=rs.getDate("MODI_INFO_DATE");
+            Content.MODI_INFO_DATE =rs.getTimestamp("MODI_INFO_DATE").toString().replace(' ', 'T');
+            /*
+            Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+            calendar.setTime(Content.REGI_INFO_DATE);   // assigns calendar to given date 
+            String h=Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+            String m=Integer.toString(calendar.get(Calendar.MINUTE));
+            String s=Integer.toString(calendar.get(Calendar.SECOND));
+            h = h.length()==1?"0"+h:h;
+            m = m.length()==1?"0"+m:m;
+            s = s.length()==1?"0"+s:s;
+            String dd = Content.REGI_INFO_DATE.toString()+"T"+h+":"+m+":"+s+"Z";
+            */
+//            System.out.println(rs.getTimestamp("REGI_INFO_DATE").toString().replace(' ', 'T') );
         }
         catch(Exception e)
         {

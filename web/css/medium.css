@@ -19,24 +19,24 @@ div
 #search_div
 {
     left: 350px;
-    top: -10px;
+    top: 17px;
     width: 290px;
 }
 #result_div
 {
     left: 350px;
-    top: -10px;
+    top: 17px;
     width: 290px;
 }
 #multi_lang_div
 {
     left: 400px;
-    top: -270px;
+    top: -290px;
 }
 #button_div
 {
     left: 400px;
-    top: -270px;
+    top: -290px;
 }
 #business_number_div
 {

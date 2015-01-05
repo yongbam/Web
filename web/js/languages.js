@@ -13,7 +13,8 @@ $.lang['ko'] = {
     print_bt: '화면출력',
     init_bt: '초기화',
     delete_bt: '삭제',
-    setup_bt: '화면설정'
+    setup_bt: '화면설정',
+    busi_num: '사업자 번호'
 };
 
 $.lang['en'] = {
@@ -23,7 +24,8 @@ $.lang['en'] = {
     print_bt: 'Print',
     init_bt: 'Init',
     delete_bt: 'Delete',
-    setup_bt: 'Setup'
+    setup_bt: 'Setup',
+    busi_num: 'Business Number'
 };
 
 $.lang['ja'] = {
@@ -33,7 +35,8 @@ $.lang['ja'] = {
     print_bt: '畵面出力',
     init_bt: '初期化',
     delete_bt: 'デリ-ト',
-    setup_bt: '設定'
+    setup_bt: '設定',
+    busi_num: '事業者番号'
 };
 
 /**
@@ -45,6 +48,7 @@ function setLanguage(currentLanguage) {
     console.log('setLanguage : ' + currentLanguage);
     $('[data-langNum]').each(function() {
         var $this = $(this); 
+//        alert($this.html);
         this.value=$.lang[currentLanguage][$(this).attr("data-langNum")];
 //        $this.html($.lang[currentLanguage][$this.data('langnum')]); 
     });

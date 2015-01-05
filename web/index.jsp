@@ -465,7 +465,7 @@ case ACTION_DELETE:
                 <legend>Search content</legend>
                 <table>
                     <tr>
-                        <td width="90px">사업자 번호</td>
+                        <td width="90px" data-langNum="busi_num">사업자 번호</td>
                         <td colspan="2">
                             <input class="field" type="text" name="b_number" placeholder="business number"
                                    pattern="\d{4}-\d{3}-\d{4}"
