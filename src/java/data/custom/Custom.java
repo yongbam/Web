@@ -191,7 +191,7 @@ public class Custom {
         
     };
     public ArrayList<Account_> AccountList;
-    // function
+    // Get contents of Custom from ResultSet
     public void SetCustom(ResultSet rs)
     {
         try
@@ -243,32 +243,17 @@ public class Custom {
         }
         
     }
-    
+    // Input account to ACCOUNT_LIST, if list have empty Account_ then input to that variable, for NNString
     public void SetAccount(NNString office_n, NNString bank_n, NNString acc_num)
     {
-        for(int i=0; i<AccountList.size(); ++i)
-        {
-            if(AccountList.get(i).ACCOUNT_NUM.get().isEmpty() )
-            {
-                Account_ acc = AccountList.get(i);
-                acc.FACTORY=office_n;
-                acc.TRADE_BANK=bank_n;
-                acc.ACCOUNT_NUM=acc_num;
-                
-                return;
-            }
-        }
-        
-        Account_ acc = new Account_();
-        acc.FACTORY=office_n;
-        acc.TRADE_BANK=bank_n;
-        acc.ACCOUNT_NUM=acc_num;
-        
-        AccountList.add(acc);
-        
+        String factory = office_n.get();
+        String trade_bank = bank_n.get();
+        String account_number = acc_num.get();
     }
+    // Input account to ACCOUNT_LIST, if list have empty Account_ then input to that variable, for String
     public void SetAccount(String office_n, String bank_n, String acc_num)
     {
+        System.out.println("Account add "+acc_num);
         for(int i=0; i<AccountList.size(); ++i)
         {
             if(AccountList.get(i).ACCOUNT_NUM.get().isEmpty() )
@@ -289,19 +274,27 @@ public class Custom {
         
         AccountList.add(acc);
     }
+    // Add empty account for user add new account
+    public void AddEmptyAccount()
+    {
+        Account_ acc = new Account_();
+        System.out.println("Empty account add "+acc.ACCOUNT_NUM.get());
+        AccountList.add(acc);
+    }
+    // Add acoount from Resultset
     public void SetAccount(ResultSet rs)
     {
         try
         {
-            Account_ acc = new Account_();
-            acc.FACTORY.set(rs.getString("FACTORY"));
-            acc.TRADE_BANK.set(rs.getString("TRADE_BANK"));
-            acc.ACCOUNT_NUM.set(rs.getString("ACCOUNT_NUM"));
+            String factory=rs.getString("FACTORY");
+            String trade_bank=rs.getString("TRADE_BANK");
+            String account_num=rs.getString("ACCOUNT_NUM");
 
-            AccountList.add(acc);
+            SetAccount(factory, trade_bank, account_num);
         }
         catch(Exception e)
         {
+            e.printStackTrace();
         }
     }
 }

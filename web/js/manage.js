@@ -126,3 +126,12 @@ function printDocument()
     Document.body.innerHTML = before;
     
 }
+
+// Submit after confirm
+function submitAfterConfirm(){
+    var form = document.getcontent_form;
+    var bAct = window.confirm("진짜로 하시겠습니까?");
+    
+    if(bAct)
+        form.submit();
+}

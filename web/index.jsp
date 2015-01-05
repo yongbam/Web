@@ -41,6 +41,8 @@
     final int ACTION_CLOSE=5;
     
     // Initialze values
+    // Send action result to button
+    int nActionResult=0;
     
     // Custom save object
     Custom custom_val = new Custom();
@@ -281,6 +283,8 @@
                     {
                         custom_val.SetAccount(rs);
                     }
+                    custom_val.AddEmptyAccount();
+                    System.out.println("Account size is "+custom_val.AccountList.size() );
                 }
                 // Qurey by just double click of search result
                 else
@@ -304,6 +308,8 @@
                         {
                             custom_val.SetAccount(rs);
                         }
+                        custom_val.AddEmptyAccount();
+                        System.out.println("Account size is "+custom_val.AccountList.size() );
                     }
                 }
                 session.setAttribute("B_NUMBER", custom_val.Key.BUSI_NUM.get() );
@@ -314,11 +320,6 @@
                 System.out.print("SAVE\n");
                 
                 // If same and previous busi_num saved then update, else insert
-                System.out.println("!!!!!!!");
-                System.out.println(num.length());//13
-                System.out.println(num.equals(custom_val.Key.BUSI_NUM.get()));//true
-                System.out.println(custom_val.Key.BUSI_NUM.isEmpty());//false
-                System.out.println("!!!!!!!");
                 if(num.length()>0 && 
                         num.equals(custom_val.Key.BUSI_NUM.get()) && 
                         !custom_val.Key.BUSI_NUM.isEmpty())
@@ -330,19 +331,38 @@
                     // Account
                     for(String updateAccountQuery : updateCustomAcoontList)
                         rs = db.ExecuteQuery(updateAccountQuery);
+                    
+                    // Save business number to session
+                    session.setAttribute("B_NUMBER", custom_val.Key.BUSI_NUM.get() );
+                    
+                    nActionResult = 1;
                 }
                 else
                 {
                     System.out.print("Save custom - insert query\n");
                     
-                    // Custom
-                    rs = db.ExecuteQuery(custom_val.insertSaveCustom() );
+                    // Check if duplicate then not update, just stop
+                    rs = db.ExecutePrepareQuery(viewCustomContentsByDoubleClick, 
+                            "sz", custom_val.Key.BUSI_NUM.get(), "sz", custom_val.Key.CUSTOM.get());
+                    if(rs.next())
+                    {
+                        nActionResult=2;
+                    }
+                    else
+                    {
+                        // Custom
+                        rs = db.ExecuteQuery(custom_val.insertSaveCustom() );
 
-                    // Account
-                    for(String insertAccountQuery : insertCustomAccountList)
-                        rs = db.ExecuteQuery(insertAccountQuery);
+                        // Account
+                        for(String insertAccountQuery : insertCustomAccountList)
+                            rs = db.ExecuteQuery(insertAccountQuery);
+                        
+                        // Save business number to session
+                        session.setAttribute("B_NUMBER", custom_val.Key.BUSI_NUM.get() );
+                        
+                        nActionResult = 3;
+                    }
                 }
-                session.setAttribute("B_NUMBER", custom_val.Key.BUSI_NUM.get() );
                 
                 break;
             case ACTION_DELETE:
@@ -352,6 +372,8 @@
                 // BUSI_NUM initialize
                 custom_val.Key.BUSI_NUM.set("");
                 session.setAttribute("B_NUMBER", "");
+                
+                nActionResult = 4;
                 break;
             case ACTION_CLOSE:
                 // Nothing, not specification
@@ -436,24 +458,34 @@
         <link rel="stylesheet" type="text/css" media="screen and (min-width: 1051px)" href="css/wide.css" ></link>
         <!-- Support multi language -->
         <script type="text/javascript" src="js/languages.js"></script>
-        <%
-                    switch(button_type)
-                    {
-                case ACTION_SAVE:
-                    %>
-                    <script>alert("SAVE");</script>
-                    <%
-                    break;
-case ACTION_DELETE:
-    %>
-    <script>alert("DELETE");</script>
-    <%
-    break;
-                }
-%>
     </head>
     <!-- body -->
     <body>
+        <%
+        switch(nActionResult)
+        {
+            case 1:
+                %>
+                <script type='text/javascript'>alert("변경하였습니다");</script>
+                <%
+                break;
+            case 2:
+                %>
+                <script type='text/javascript'>alert('Duplicate Business number or Custom name. Save function stop');</script>
+                <%
+                break;
+            case 3:
+                %>
+                <script type='text/javascript'>alert("저장하였습니다");</script>
+                <%
+                break;
+            case 4:
+                %>
+                <script type='text/javascript'>alert("삭제하였습니다");</script>
+                <%
+                break;
+        }
+        %>
         <!-- Title -->
         <div id="header">
             <h1>[실기 TEST] 거래처 관리</h1>
@@ -551,15 +583,15 @@ case ACTION_DELETE:
                             </td>
                             <td>
                                 <input class="field" type="submit" id="lang_button" name="init_bt" data-langNum="init_bt" value="Init" 
-                                       onclick="Initialize();"/>
+                                       onclick="submitAfterConfirm();Initialize();"/>
                             </td>
                             <td>
                                 <input class="field" type="submit" id="lang_button" name="save_bt" data-langNum="save_bt" value="Save" 
-                                       onclick="layer_open('layer2');"/>
+                                       onclick="submitAfterConfirm();layer_open('layer2');"/>
                             </td>
                             <td>
                                 <input class="field" type="submit" id="lang_button" name="delete_bt" data-langNum="delete_bt" value="Delete" 
-                                       onclick="layer_open('layer2');"/>
+                                       onclick="submitAfterConfirm();layer_open('layer2');"/>
                             </td>
                             <td>
                                 <input class="field" type="submit" id="lang_button" name="print_bt" data-langNum="print_bt" value="Print" 
@@ -1003,6 +1035,7 @@ case ACTION_DELETE:
                             // Execute when even number - 0, 2, 4, ...
                             for( Account_ acc : custom_val.AccountList)
                             {
+//                                System.out.println("Add account number "+acc.ACCOUNT_NUM.get() );
                             %>
                             <tr>
                                 <td>
