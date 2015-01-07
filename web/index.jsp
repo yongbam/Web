@@ -11,6 +11,7 @@
                         2015. 01. 03 AM 11:09:00    Start modify some user interface, some java move to other library
                         2015. 01. 03 PM 03:09:00    Add multi language base
                         2015. 01. 03 PM 11:00:00    Check some buttons
+                        2015. 01. 07 PM 02:13:00    Some change by chenged of connectoin to dbms class
 
     Author      :   yong il Kim
 --%>
@@ -60,8 +61,8 @@
     // Custom save object
     Custom custom_val = new Custom();
     
-    // Database
-    final Manage db= new Manage();
+    // Database create by builder pattern
+    final Manage db= new DbManageBuilder().Port(3310).Build();
     
     // Result by query database
     ResultSet rs = null;
@@ -478,24 +479,17 @@
         <!-- Cross browsing -->
         <script type="text/javascript" src="js/cross_browsing.js" ></script>
         <!-- JQuery date picker for IE, if move to ethernal then not act -->
+        <script type="text/javascript" src="js/datepicker.js"></script>
         <%
         if(bIsIE)
         {
             %>
         <script>
-            $(function() {
-                $( '#contract_start' ).datepicker({
-                    dateFormat: "yy-mm-dd"
-                });
-                $( '#contract_end' ).datepicker({
-                    dateFormat: "yy-mm-dd"
-                });
-            });
+            
         </script>
         <%
         }
         %>
-                
     </head>
     <!-- body -->
     <body>

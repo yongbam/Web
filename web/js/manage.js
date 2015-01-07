@@ -124,6 +124,7 @@ function submitAfterConfirm(){
 }
 
 // JQuery need ready cuz couldn't know elements until load sequence
+// Important : this code available to have error, check later
 $(document).ready(function(){
     // Check inputbox test maxlength
     $('#input_text').keyup(function(){
@@ -131,5 +132,5 @@ $(document).ready(function(){
             alert('제한길이 초과');
             $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
         }
-    });
+    });        
     });
